@@ -67,6 +67,8 @@ input.note{width:150px;background:#fff;color:var(--txt);border:1px solid var(--l
 .balance.bad{background:#fff3ec;border:1px solid var(--orange);color:#a5480a}
 .lg h2{color:var(--blue);margin:6px 0 10px}.lg h3{color:var(--blue2);margin:18px 0 6px}
 .lg ul{font-size:.85rem;line-height:1.5;color:var(--txt)}
+.lg input.pcedit{width:160px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:6px;padding:5px;font:inherit;font-size:.82rem}
+.lg input.pcedit:focus{border-color:var(--blue2);outline:none}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .hint{color:#6b7783;font-size:.8rem}
 .hide{display:none}
@@ -88,6 +90,7 @@ textarea{min-width:120px;font-size:.8rem}
 .grip{display:none}
 .mv button{padding:5px 8px;font-size:.7rem}
 input.note{width:110px}
+.lg input.pcedit{width:120px}
 }
 </style></head><body>
 <header><div class="top"></div>
@@ -149,19 +152,22 @@ input.note{width:110px}
 <div id="lgView" class="hide">
 <div class="lg">
 <h2>Legende &amp; Pace-Vorgaben</h2>
-<div class="scroll"><table><thead><tr><th>Kuerzel</th><th>Bedeutung</th><th>Pace / Intensitaet</th></tr></thead><tbody>
-<tr><td><b>ESR</b></td><td>Easy Steady Run &ndash; lockerer Dauerlauf</td><td>4:45-5:15/km</td></tr>
-<tr><td><b>LSR</b></td><td>Long Steady Run &ndash; langer Dauerlauf, Grundlage</td><td>4:15-4:35/km</td></tr>
-<tr><td><b>IVT</b></td><td>Intervall Training &ndash; kurze, schnelle Intervalle</td><td>3:10-3:30/km</td></tr>
-<tr><td><b>ST DL2</b></td><td>Speed/Schwellentraining (Tempo-km-Wdh.)</td><td>3:30-3:40/km</td></tr>
-<tr><td><b>ST DL2 Berg</b></td><td>Schwellen-Einheit im Anstieg (kraftbetont)</td><td>3:40-4:10/km +HM</td></tr>
-<tr><td><b>Tempo (DL1)</b></td><td>Tempolauf Renntempo bis leicht schneller</td><td>3:40-4:00/km</td></tr>
-<tr><td><b>Fartlek/Hills</b></td><td>Tempowechsel- bzw. Huegeltraining</td><td>4:00-4:20/km wechselnd</td></tr>
-<tr><td><b>Kraft/Stabi</b></td><td>Kraft- und Stabitraining</td><td>periodisiert: Maxkraft &rarr; Kraftausdauer/Plyo &rarr; Erhaltung</td></tr>
-<tr><td><b>Ausschuetteln</b></td><td>Ganz lockerer Trabtag vor/nach Wettkampf</td><td>5:00-5:30/km</td></tr>
+<p class="hint">Bei Formverbesserung: Pace-Felder direkt anpassen &ndash; die Werte wirken sofort im ganzen Plan.</p>
+<div class="scroll"><table><thead><tr><th>Kuerzel</th><th>Bedeutung</th><th>Pace / Intensitaet (editierbar)</th></tr></thead><tbody>
+<tr><td><b>ESR</b></td><td>Easy Steady Run &ndash; lockerer Dauerlauf</td><td><input class="pcedit" data-pk="esr"></td></tr>
+<tr><td><b>LSR</b></td><td>Long Steady Run &ndash; langer Dauerlauf, Grundlage</td><td><input class="pcedit" data-pk="lsr"></td></tr>
+<tr><td><b>IVT</b></td><td>Intervall Training &ndash; kurze, schnelle Intervalle</td><td><input class="pcedit" data-pk="ivt"></td></tr>
+<tr><td><b>ST DL2</b></td><td>Speed/Schwellentraining (Tempo-km-Wdh.)</td><td><input class="pcedit" data-pk="dl2"></td></tr>
+<tr><td><b>ST DL2 Berg</b></td><td>Schwellen-Einheit im Anstieg (kraftbetont)</td><td><input class="pcedit" data-pk="dl2berg"></td></tr>
+<tr><td><b>Tempo (DL1)</b></td><td>Tempolauf Renntempo bis leicht schneller</td><td><input class="pcedit" data-pk="tempo"></td></tr>
+<tr><td><b>Fartlek/Hills</b></td><td>Tempowechsel- bzw. Huegeltraining</td><td><input class="pcedit" data-pk="fartlek"></td></tr>
+<tr><td><b>Kraft/Stabi</b></td><td>Kraft- und Stabitraining</td><td><input class="pcedit" data-pk="kraft"></td></tr>
+<tr><td><b>Ausschuetteln</b></td><td>Ganz lockerer Trabtag vor/nach Wettkampf</td><td><input class="pcedit" data-pk="aus"></td></tr>
 <tr><td><b>Off</b></td><td>Ruhetag / aktive Erholung</td><td>-</td></tr>
 <tr><td><b>HM</b></td><td>Hoehenmeter im jeweiligen Lauf</td><td>-</td></tr>
 </tbody></table></div>
+<p style="color:#6b7783;font-size:.8rem" id="paceDate"></p>
+<p><button class="btn ghost" id="paceReset">Pace-Vorgaben zuruecksetzen</button></p>
 <h3>Datensicherung</h3>
 <ul>
 <li><b>Plan exportieren:</b> Speichert deinen aktuellen Stand als JSON-Datei (Backup).</li>
@@ -205,7 +211,13 @@ try{
 var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",tempo:"#ec4899",fartlek:"#14b8a6",strength:"#64748b",rest:"#9aa5b1",race:"#FF6600"};
 var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo (DL1)",fartlek:"Fartlek",strength:"Kraft/Stabi",rest:"Ruhe",race:"Wettkampf"};
 var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
-var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v9";
+var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v9",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
+var PACE_DEF={esr:"4:45-5:15/km",lsr:"4:15-4:35/km",lsrlocker:"4:45-5:05/km",rennsim:"3:55-4:10/km flach, dann n.RPE",ivt:"3:10-3:30/km",dl2:"3:30-3:40/km",dl2berg:"3:40-4:10/km +HM",dl2locker:"3:35-3:45/km",tempo:"3:40-4:00/km",fartlek:"4:00-4:20/km wechselnd",kraft:"RPE 6-8",aus:"5:00-5:30/km"};
+var PACE={};
+function loadPace(){try{var s=localStorage.getItem(PKEY);var o=s?JSON.parse(s):{};for(var k in PACE_DEF){PACE[k]=(o&&o[k])?o[k]:PACE_DEF[k];}}catch(e){for(var k2 in PACE_DEF)PACE[k2]=PACE_DEF[k2];}}
+function savePace(){try{localStorage.setItem(PKEY,JSON.stringify(PACE));}catch(e){}}
+function stampPace(){try{var d=new Date();var s=("0"+d.getDate()).slice(-2)+"."+("0"+(d.getMonth()+1)).slice(-2)+"."+d.getFullYear();localStorage.setItem(PDKEY,s);showPaceDate();}catch(e){}}
+function showPaceDate(){var el=document.getElementById("paceDate");if(!el)return;var s="";try{s=localStorage.getItem(PDKEY)||"";}catch(e){}el.textContent=s?("Pace zuletzt angepasst am "+s):"Pace-Vorgaben noch nicht angepasst (Standardwerte).";}
 function cls(t){t=(t||"").toUpperCase();if(!t.replace(/\s/g,""))return"rest";
 if(t.indexOf("RENN-SIM")>-1)return"long";if(t.indexOf("RACE")>-1)return"race";
 if(t.indexOf("OFF")===0||t.indexOf("AUSROLLEN")===0)return"rest";
@@ -225,15 +237,15 @@ function imbalanced(w){var hard=w.days.map(function(d){return INT[cls(d.text)]>=
 for(var i=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1])return true;}return false;}
 function pace(t){var c=cls(t),T=(t||"").toUpperCase();
 if(c==="rest")return"-";
-if(c==="strength")return"RPE 6-8";
+if(c==="strength")return PACE.kraft;
 if(c==="race")return"Wettkampftempo";
-if(c==="interval")return"3:10-3:30/km";
-if(c==="threshold"){if(T.indexOf("BERG")>-1)return"3:40-4:10/km +HM";if(T.indexOf("LOCKER")>-1)return"3:35-3:45/km";return"3:30-3:40/km";}
-if(c==="tempo")return"3:40-4:00/km";
-if(c==="fartlek")return"4:00-4:20/km wechselnd";
-if(c==="long"){if(T.indexOf("RENN-SIM")>-1)return"3:55-4:10/km flach, dann n.RPE";if(T.indexOf("LOCKER")>-1)return"4:45-5:05/km";if(T.indexOf("N.RPE")>-1||T.indexOf("HM8")>-1||T.indexOf("HM1")>-1)return"n.RPE (HM-Rate)";return"4:15-4:35/km";}
-if(T.indexOf("AUSSCHUETTELN")>-1)return"5:00-5:30/km";
-return"4:45-5:15/km";}
+if(c==="interval")return PACE.ivt;
+if(c==="threshold"){if(T.indexOf("BERG")>-1)return PACE.dl2berg;if(T.indexOf("LOCKER")>-1)return PACE.dl2locker;return PACE.dl2;}
+if(c==="tempo")return PACE.tempo;
+if(c==="fartlek")return PACE.fartlek;
+if(c==="long"){if(T.indexOf("RENN-SIM")>-1)return PACE.rennsim;if(T.indexOf("LOCKER")>-1)return PACE.lsrlocker;if(T.indexOf("N.RPE")>-1||T.indexOf("HM8")>-1||T.indexOf("HM1")>-1)return"n.RPE (HM-Rate)";return PACE.lsr;}
+if(T.indexOf("AUSSCHUETTELN")>-1)return PACE.aus;
+return PACE.esr;}
 function repKm(t){var total=0,found=false,re=/(\d+)\s*x\s*(\d+(?:[.,]\d+)?)\s*(km|k|m)/gi,m;
 while((m=re.exec(t))!==null){var reps=parseInt(m[1],10);var val=parseFloat(m[2].replace(",","."));
 var u=m[3].toLowerCase();var d=(u==="m")?val/1000:val;total+=reps*d;found=true;}
@@ -307,15 +319,25 @@ document.getElementById("tabLg").className="tab"+(v==="lg"?" active":"");}
 document.getElementById("tabOv").onclick=function(){showView("ov");renderOv();};
 document.getElementById("tabWk").onclick=function(){showView("wk");render();};
 document.getElementById("tabLg").onclick=function(){showView("lg");};
+function initPaceInputs(){var ins=document.querySelectorAll(".pcedit");
+ins.forEach(function(inp){var k=inp.getAttribute("data-pk");inp.value=PACE[k]||"";
+inp.onchange=function(){PACE[k]=inp.value;savePace();stampPace();
+renderOv();if(document.getElementById("wkView").className!=="hide")render();};});}
+document.getElementById("paceReset").onclick=function(){if(confirm("Pace-Vorgaben auf Standard zuruecksetzen?")){for(var k in PACE_DEF)PACE[k]=PACE_DEF[k];savePace();initPaceInputs();renderOv();if(document.getElementById("wkView").className!=="hide")render();}};
 document.getElementById("expBtn").onclick=function(){
-var data=JSON.stringify(weeks);var blob=new Blob([data],{type:"application/json"});
+var pd="";try{pd=localStorage.getItem(PDKEY)||"";}catch(e){}
+var payload={weeks:weeks,pace:PACE,paceDate:pd};var data=JSON.stringify(payload);var blob=new Blob([data],{type:"application/json"});
 var url=URL.createObjectURL(blob);var a=document.createElement("a");
 a.href=url;a.download="jungfrau-plan-backup.json";document.body.appendChild(a);a.click();
 document.body.removeChild(a);URL.revokeObjectURL(url);};
 document.getElementById("impBtn").onclick=function(){document.getElementById("impFile").click();};
 document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f)return;
 var r=new FileReader();r.onload=function(ev){try{var d=JSON.parse(ev.target.result);
-if(Array.isArray(d)&&d.length&&d[0].days){weeks=d;cur=0;save();sel();leg();renderOv();
+var wk=Array.isArray(d)?d:d.weeks;
+if(Array.isArray(wk)&&wk.length&&wk[0].days){weeks=wk;cur=0;save();
+if(d.pace){for(var k in PACE_DEF)PACE[k]=d.pace[k]||PACE_DEF[k];savePace();initPaceInputs();}
+if(d.paceDate){try{localStorage.setItem(PDKEY,d.paceDate);}catch(e2){}}showPaceDate();
+sel();leg();renderOv();
 if(document.getElementById("wkView").className!=="hide")render();
 alert("Plan importiert: "+weeks.length+" Wochen.");}
 else{alert("Datei enthaelt keine gueltigen Plandaten.");}}
@@ -454,7 +476,7 @@ if(j>-1){var e=r.splice(j,1)[0];r.splice(i+1,0,e);}}}
 r.forEach(function(d,k){d.day=WD[k];});w.days=r;save();render();};
 document.getElementById("reset").onclick=function(){weeks[cur]=build()[cur];save();render();renderOv();};
 document.getElementById("resetAll").onclick=function(){if(confirm("Alle Aenderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}load();sel();render();renderOv();}};
-load();sel();leg();renderOv();
+loadPace();load();sel();leg();initPaceInputs();showPaceDate();renderOv();
 S.textContent="Trainingsplan korrekt geladen.";
 }catch(err){S.className="bad";S.textContent="Fehler: "+err.message;}
 </script></body></html>

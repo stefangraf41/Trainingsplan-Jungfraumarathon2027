@@ -34,8 +34,11 @@ input.bem{flex:1;min-width:200px;background:#fff;color:var(--txt);border:1px sol
 table{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.83rem}
 th{background:var(--blue);color:#fff;font-weight:600}
-.ov td{cursor:pointer}.ov tr:hover td{background:#eef5fb}
-.ov .wk{font-weight:700;color:var(--blue)}
+.ov .wk{font-weight:700;color:var(--blue);cursor:pointer}
+.ov .wk:hover{text-decoration:underline}
+.ov .daycell{cursor:grab}
+.ov .daycell.dragover{box-shadow:inset 0 0 0 2px var(--orange)}
+.ov .daycell.dragging{opacity:.4}
 .cell{border-radius:4px;padding:3px 5px;display:block;font-size:.78rem;line-height:1.2;position:relative}
 .pc{color:var(--muted);font-size:.72rem;display:block;margin-top:2px}
 .notedot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:4px;cursor:help;vertical-align:middle}
@@ -87,13 +90,15 @@ input.note{width:110px}
 <header><div class="top"></div>
 <svg class="mtn" viewBox="0 0 1200 70" preserveAspectRatio="none">
 <polygon points="0,70 200,30 380,58 560,18 760,60 980,26 1200,50 1200,70" fill="#ffffff" opacity="0.12"/>
+<polygon points="0,70 150,44 300<svg class="mtn" viewBox="0 0 1200 70" preserveAspectRatio="none">
+<polygon points="0,70 200,30 380,58 560,18 760,60 980,26 1200,50 1200,70" fill="#ffffff" opacity="0.12"/>
 <polygon points="0,70 150,44 300,66 470,30 560,50 700,14 840,58 1000,36 1160,64 1200,52 1200,70" fill="#0a5ea3"/>
 <polygon points="686,30 700,14 714,30 707,28 700,22 693,28" fill="#ffffff" opacity="0.95"/>
 <polygon points="458,42 470,30 482,42 476,40 470,35 464,40" fill="#ffffff" opacity="0.9"/>
 <polygon points="968,48 980,36 992,48 986,46 980,41 974,46" fill="#ffffff" opacity="0.85"/>
 </svg>
 <div class="hc"><h1>&#127956; Jungfrau-Marathon 2027 &ndash; Trainingsplan</h1>
-<div class="sub">Ziel 3:40 h &middot; 43 Wochen &middot; Gesamtansicht, Wochenplanung, Legende &middot; optimiert fuer Handy, Tablet &amp; Desktop</div></div></header>
+<div class="sub">Ziel 3:40 h &middot; 43 Wochen &middot; Gesamtansicht mit Drag &amp; Drop, Wochenplanung, Legende</div></div></header>
 <div class="wrap">
 <div id="status">Lade...</div>
 <div class="tabs">
@@ -106,7 +111,7 @@ input.note{width:110px}
 <h3 style="color:#004B8D;margin:4px 0 8px">Saisonverlauf: Wochen-km &amp; Hoehenmeter</h3>
 <div id="ovChart"></div>
 <div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Hoehenmeter</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermuedung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span></div>
-<div class="bar"><span class="phase">Klicke/tippe auf eine Woche, um sie im Detail zu bearbeiten. Farbiger Punkt = Tages-Notiz (Maus darueber zeigt Text).</span></div>
+<div class="bar"><span class="phase">Tages-Zellen per Drag &amp; Drop verschieben. Klick auf die KW-Spalte oeffnet die Woche im Detail.</span></div>
 <div class="scroll"><table class="ov"><thead><tr>
 <th>KW</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
 </tr></thead><tbody id="ovBody"></tbody></table></div>
@@ -309,17 +314,31 @@ if(i%3===0||i===n-1){s+='<text x="'+X(i)+'" y="'+(h-14)+'" fill="#6b7783" font-s
 s+='<text x="2" y="'+(pT+6)+'" fill="#007ACE" font-size="9">'+Math.round(kmMax)+' km</text>';
 s+='<text x="'+(W-pR+2)+'" y="'+(pT+6)+'" fill="#FF6600" font-size="9">'+hmMax+' HM</text>';
 document.getElementById("ovChart").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
+var ovDrag=null;
 function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="";
 weeks.forEach(function(w,wi){var tr=document.createElement("tr");
 var tot=w.days.reduce(function(s,d){return s+d.km;},0);
 var th=w.days.reduce(function(s,d){return s+d.hm;},0);
-var cells="";w.days.forEach(function(d){var t=cls(d.text);
-var nc=noteColor(d.note);
+var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
+w.days.forEach(function(d,di){var t=cls(d.text);var nc=noteColor(d.note);
 var dot=nc?'<span class="notedot" style="background:'+nc+'" title="'+esc(d.note)+'"></span>':"";
-cells+='<td><span class="cell" style="background:'+COL[t]+'22;border-left:3px solid '+COL[t]+'">'+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
-tr.innerHTML='<td class="wk">KW'+kw(w.datum)+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>'+cells+
-'<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td><td>'+esc(w.bemerkung)+'</td>';
-tr.onclick=function(ev){if(ev.target&&ev.target.className&&(""+ev.target.className).indexOf("notedot")>-1)return;cur=wi;showView("wk");render();};
+html+='<td class="daycell" draggable="true" data-wi="'+wi+'" data-di="'+di+'"><span class="cell" style="background:'+COL[t]+'22;border-left:3px solid '+COL[t]+'">'+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
+html+='<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td><td>'+esc(w.bemerkung)+'</td>';
+tr.innerHTML=html;
+tr.querySelector(".wk").onclick=function(){cur=wi;showView("wk");render();};
+var cells=tr.querySelectorAll(".daycell");
+cells.forEach(function(td){
+td.addEventListener("dragstart",function(e){ovDrag={wi:+td.dataset.wi,di:+td.dataset.di};td.classList.add("dragging");e.dataTransfer.effectAllowed="move";});
+td.addEventListener("dragend",function(){td.classList.remove("dragging");});
+td.addEventListener("dragover",function(e){if(ovDrag&&ovDrag.wi===+td.dataset.wi){e.preventDefault();td.classList.add("dragover");}});
+td.addEventListener("dragleave",function(){td.classList.remove("dragover");});
+td.addEventListener("drop",function(e){e.preventDefault();td.classList.remove("dragover");
+if(!ovDrag)return;var twi=+td.dataset.wi,tdi=+td.dataset.di;
+if(ovDrag.wi!==twi){ovDrag=null;return;}
+if(ovDrag.di===tdi){ovDrag=null;return;}
+var wk=weeks[twi];var m=wk.days.splice(ovDrag.di,1)[0];wk.days.splice(tdi,0,m);
+wk.days.forEach(function(x,k){x.day=WD[k];});ovDrag=null;save();renderOv();});
+});
 b.appendChild(tr);});
 ovChart();}
 function sel(){var s=document.getElementById("weekSel");s.innerHTML="";
@@ -349,7 +368,7 @@ tr.querySelector('[data-a=dn]').onclick=function(){move(i,1);};
 tr.querySelector('[data-a=done]').onchange=function(e){d.done=e.target.checked;save();render();};
 tr.querySelector('[data-a=text]').onchange=function(e){d.text=e.target.value;d.km=km(d.text);d.hm=hm(d.text);save();render();};
 tr.querySelector('[data-a=km]').onchange=function(e){d.km=parseFloat(e.target.value)||0;save();stats();chart();};
-tr.querySelector('[data-a=note]').onchange=function(e){d.note=e.target.value;save();renderOv();};
+tr.querySelector('[data-a=note]').onchange=function(e){d.note=e.target.value;save();};
 tr.addEventListener("dragstart",function(e){e.dataTransfer.setData("t",i);});
 tr.addEventListener("dragover",function(e){e.preventDefault();tr.classList.add("dragover");});
 tr.addEventListener("dragleave",function(){tr.classList.remove("dragover");});

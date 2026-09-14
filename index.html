@@ -31,11 +31,16 @@ input.bem{flex:1;min-width:200px;background:#fff;color:var(--txt);border:1px sol
 #chart svg,#ovChart svg{display:block;margin:0 auto;width:100%}
 #ovChart svg{max-width:560px}
 #chart svg{max-width:300px}
+#imbCount{margin:0 0 12px;padding:10px 14px;border-radius:8px;font-size:.9rem}
+#imbCount.ok{background:#e6f5f1;border:1px solid #14b8a6;color:#0d6b5f}
+#imbCount.bad{background:#fff3ec;border:1px solid var(--orange);color:#a5480a}
 table{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.83rem}
 th{background:var(--blue);color:#fff;font-weight:600}
 .ov .wk{font-weight:700;color:var(--blue);cursor:pointer}
 .ov .wk:hover{text-decoration:underline}
+.ov tr.imb td{background:#fff6f0}
+.ov .warnicon{color:var(--orange);cursor:help;margin-left:3px}
 .ov .daycell{cursor:grab}
 .ov .daycell.dragover{box-shadow:inset 0 0 0 2px var(--orange)}
 .ov .daycell.dragging{opacity:.4}
@@ -90,8 +95,6 @@ input.note{width:110px}
 <header><div class="top"></div>
 <svg class="mtn" viewBox="0 0 1200 70" preserveAspectRatio="none">
 <polygon points="0,70 200,30 380,58 560,18 760,60 980,26 1200,50 1200,70" fill="#ffffff" opacity="0.12"/>
-<polygon points="0,70 150,44 300<svg class="mtn" viewBox="0 0 1200 70" preserveAspectRatio="none">
-<polygon points="0,70 200,30 380,58 560,18 760,60 980,26 1200,50 1200,70" fill="#ffffff" opacity="0.12"/>
 <polygon points="0,70 150,44 300,66 470,30 560,50 700,14 840,58 1000,36 1160,64 1200,52 1200,70" fill="#0a5ea3"/>
 <polygon points="686,30 700,14 714,30 707,28 700,22 693,28" fill="#ffffff" opacity="0.95"/>
 <polygon points="458,42 470,30 482,42 476,40 470,35 464,40" fill="#ffffff" opacity="0.9"/>
@@ -110,8 +113,9 @@ input.note{width:110px}
 <div id="ovView">
 <h3 style="color:#004B8D;margin:4px 0 8px">Saisonverlauf: Wochen-km &amp; Hoehenmeter</h3>
 <div id="ovChart"></div>
-<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Hoehenmeter</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermuedung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span></div>
-<div class="bar"><span class="phase">Tages-Zellen per Drag &amp; Drop verschieben. Klick auf die KW-Spalte oeffnet die Woche im Detail.</span></div>
+<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Hoehenmeter</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermuedung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span><span>&#9888; = zwei harte Tage in Folge</span></div>
+<div id="imbCount"></div>
+<div class="bar"><span class="phase">Tages-Zellen per Drag &amp; Drop verschieben. Klick auf die KW-Spalte oeffnet die Woche im Detail. &#9888; markiert unausgewogene Wochen.</span></div>
 <div class="scroll"><table class="ov"><thead><tr>
 <th>KW</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
 </tr></thead><tbody id="ovBody"></tbody></table></div>
@@ -209,6 +213,8 @@ for(var i=0;i<red.length;i++){if(t.indexOf(red[i])>-1)return"#ef4444";}
 for(var y=0;y<yellow.length;y++){if(t.indexOf(yellow[y])>-1)return"#eab308";}
 for(var j=0;j<green.length;j++){if(t.indexOf(green[j])>-1)return"#14b8a6";}
 return"#FF6600";}
+function imbalanced(w){var hard=w.days.map(function(d){return INT[cls(d.text)]>=3;});
+for(var i=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1])return true;}return false;}
 function pace(t){var c=cls(t),T=(t||"").toUpperCase();
 if(c==="rest")return"-";
 if(c==="strength")return"RPE 6-8";
@@ -314,12 +320,18 @@ if(i%3===0||i===n-1){s+='<text x="'+X(i)+'" y="'+(h-14)+'" fill="#6b7783" font-s
 s+='<text x="2" y="'+(pT+6)+'" fill="#007ACE" font-size="9">'+Math.round(kmMax)+' km</text>';
 s+='<text x="'+(W-pR+2)+'" y="'+(pT+6)+'" fill="#FF6600" font-size="9">'+hmMax+' HM</text>';
 document.getElementById("ovChart").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
+function updateImbCount(){var el=document.getElementById("imbCount");
+var list=[];weeks.forEach(function(w){if(imbalanced(w))list.push("KW"+kw(w.datum));});
+if(list.length){el.className="bad";el.innerHTML="&#9888; "+list.length+" von "+weeks.length+" Wochen unausgewogen: "+list.join(", ");}
+else{el.className="ok";el.innerHTML="&#10003; Alle "+weeks.length+" Wochen ausgewogen - keine zwei harten Tage in Folge.";}}
 var ovDrag=null;
 function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="";
 weeks.forEach(function(w,wi){var tr=document.createElement("tr");
 var tot=w.days.reduce(function(s,d){return s+d.km;},0);
 var th=w.days.reduce(function(s,d){return s+d.hm;},0);
-var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
+var imb=imbalanced(w);if(imb)tr.className="imb";
+var warn=imb?'<span class="warnicon" title="Zwei harte Tage in Folge">&#9888;</span>':"";
+var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+warn+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
 w.days.forEach(function(d,di){var t=cls(d.text);var nc=noteColor(d.note);
 var dot=nc?'<span class="notedot" style="background:'+nc+'" title="'+esc(d.note)+'"></span>':"";
 html+='<td class="daycell" draggable="true" data-wi="'+wi+'" data-di="'+di+'"><span class="cell" style="background:'+COL[t]+'22;border-left:3px solid '+COL[t]+'">'+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
@@ -340,7 +352,7 @@ var wk=weeks[twi];var m=wk.days.splice(ovDrag.di,1)[0];wk.days.splice(tdi,0,m);
 wk.days.forEach(function(x,k){x.day=WD[k];});ovDrag=null;save();renderOv();});
 });
 b.appendChild(tr);});
-ovChart();}
+ovChart();updateImbCount();}
 function sel(){var s=document.getElementById("weekSel");s.innerHTML="";
 weeks.forEach(function(w,i){var o=document.createElement("option");o.value=i;o.textContent="KW "+kw(w.datum)+" - "+w.phase;s.appendChild(o);});s.value=cur;}
 document.getElementById("weekSel").addEventListener("change",function(e){cur=+e.target.value;render();});

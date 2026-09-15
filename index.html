@@ -249,7 +249,7 @@ if(c==="threshold"){if(T.indexOf("BERG")>-1)return PACE.dl2berg;if(T.indexOf("LO
 if(c==="tempo")return PACE.tempo;
 if(c==="fartlek")return PACE.fartlek;
 if(c==="long"){if(T.indexOf("RENN-SIM")>-1)return PACE.rennsim;if(T.indexOf("LOCKER")>-1)return PACE.lsrlocker;if(T.indexOf("N.RPE")>-1||T.indexOf("HM8")>-1||T.indexOf("HM1")>-1)return"n.RPE (HM-Rate)";return PACE.lsr;}
-if(T.indexOf("AUSSCHÜTTELN")>-1)return Pif(T.indexOf("AUSSCHÜTTELN")>-1)return PACE.aus;
+if(T.indexOf("AUSSCHÜTTELN")>-1)return PACE.aus;
 return PACE.esr;}
 function repKm(t){var total=0,found=false,re=/(\d+)\s*x\s*(\d+(?:[.,]\d+)?)\s*(km|k|m)/gi,m;
 while((m=re.exec(t))!==null){var reps=parseInt(m[1],10);var val=parseFloat(m[2].replace(",","."));

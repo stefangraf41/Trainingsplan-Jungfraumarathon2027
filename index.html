@@ -102,7 +102,7 @@ input.note{width:110px}
 <polygon points="968,48 980,36 992,48 986,46 980,41 974,46" fill="#ffffff" opacity="0.85"/>
 </svg>
 <div class="hc"><h1>&#127956; Jungfrau-Marathon 2027 &ndash; Trainingsplan</h1>
-<div class="sub">Ziel 3:40 h &middot; 43 Wochen &middot; Gesamtansicht mit Drag &amp; Drop, Wochenplanung, Legende</div></div></header>
+<div class="sub">Ziel 3:40 h &middot; Gesamtansicht und Wochenplanung mit Drag &amp; Drop editierbar</div></div></header>
 <div class="wrap">
 <div id="status">Lade...</div>
 <div class="tabs">
@@ -117,10 +117,10 @@ input.note{width:110px}
 </div>
 
 <div id="ovView">
-<h3 style="color:#004B8D;margin:4px 0 8px">Saisonverlauf: Wochen-km &amp; Hoehenmeter</h3>
+<h3 style="color:#004B8D;margin:4px 0 8px">Saisonverlauf: Wochen-km &amp; Höhenmeter</h3>
 <div id="ovChart"></div>
-<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Hoehenmeter</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermuedung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span><span>&#9888; = zwei harte Tage in Folge</span></div>
-<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte oeffnet die Woche im Detail. &#9888; markiert unausgewogene Wochen.</span></div>
+<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Höhenmeter</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermüdung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span><span>&#9888; = zwei harte Tage in Folge</span></div>
+<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail. &#9888; markiert unausgewogene Wochen.</span></div>
 <div class="scroll"><table class="ov"><thead><tr>
 <th>KW</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
 </tr></thead><tbody id="ovBody"></tbody></table></div>
@@ -130,8 +130,8 @@ input.note{width:110px}
 <div class="bar">
 <select class="week" id="weekSel"></select>
 <button class="btn orange" id="suggest">Woche ausbalancieren</button>
-<button class="btn ghost" id="reset">Woche zuruecksetzen</button>
-<button class="btn ghost" id="resetAll">Alles zuruecksetzen</button>
+<button class="btn ghost" id="reset">Woche zurücksetzen</button>
+<button class="btn ghost" id="resetAll">Alles zurücksetzen</button>
 </div>
 <div class="bar"><label style="font-size:.85rem;color:#6b7783;flex:1;display:flex;align-items:center;gap:6px">Bemerkung Woche:<input class="bem" id="bem" placeholder="Notiz zur Woche..."></label></div>
 <div class="phase" id="phase"></div>
@@ -146,35 +146,35 @@ input.note{width:110px}
 <div class="balance" id="balance"></div>
 <div class="legend" id="legend"></div>
 <div class="scroll"><table><thead><tr><th>Sort</th><th>OK</th><th>Tag</th><th>Einheit</th><th>km</th><th>Pace</th><th>Typ</th><th>Last</th><th>Notiz</th></tr></thead><tbody id="body"></tbody></table></div>
-<p class="hint">Tipp: Am Desktop Zeile am Griff &#9776; ziehen. Auf allen Geraeten mit &#9650;/&#9660; verschieben. Typ und Pace werden automatisch aus dem Text erkannt. Bei Schwelle/Intervall zaehlen die Wiederholungs-km + 6 km Ein-/Auslaufen.</p>
+<p class="hint">Tipp: Am Desktop Zeile am Griff &#9776; ziehen. Auf allen Geräten mit &#9650;/&#9660; verschieben. Typ und Pace werden automatisch aus dem Text erkannt. Bei Schwelle/Intervall zählen die Wiederholungs-km + 6 km Ein-/Auslaufen.</p>
 </div>
 
 <div id="lgView" class="hide">
 <div class="lg">
 <h2>Legende &amp; Pace-Vorgaben</h2>
 <p class="hint">Bei Formverbesserung: Pace-Felder direkt anpassen &ndash; die Werte wirken sofort im ganzen Plan.</p>
-<div class="scroll"><table><thead><tr><th>Kuerzel</th><th>Bedeutung</th><th>Pace / Intensitaet (editierbar)</th></tr></thead><tbody>
+<div class="scroll"><table><thead><tr><th>Kürzel</th><th>Bedeutung</th><th>Pace / Intensität (editierbar)</th></tr></thead><tbody>
 <tr><td><b>ESR</b></td><td>Easy Steady Run &ndash; lockerer Dauerlauf</td><td><input class="pcedit" data-pk="esr"></td></tr>
 <tr><td><b>LSR</b></td><td>Long Steady Run &ndash; langer Dauerlauf, Grundlage</td><td><input class="pcedit" data-pk="lsr"></td></tr>
 <tr><td><b>IVT</b></td><td>Intervall Training &ndash; kurze, schnelle Intervalle</td><td><input class="pcedit" data-pk="ivt"></td></tr>
 <tr><td><b>ST DL2</b></td><td>Speed/Schwellentraining (Tempo-km-Wdh.)</td><td><input class="pcedit" data-pk="dl2"></td></tr>
 <tr><td><b>ST DL2 Berg</b></td><td>Schwellen-Einheit im Anstieg (kraftbetont)</td><td><input class="pcedit" data-pk="dl2berg"></td></tr>
 <tr><td><b>Tempo (DL1)</b></td><td>Tempolauf Renntempo bis leicht schneller</td><td><input class="pcedit" data-pk="tempo"></td></tr>
-<tr><td><b>Fartlek/Hills</b></td><td>Tempowechsel- bzw. Huegeltraining</td><td><input class="pcedit" data-pk="fartlek"></td></tr>
+<tr><td><b>Fartlek/Hills</b></td><td>Tempowechsel- bzw. Hügeltraining</td><td><input class="pcedit" data-pk="fartlek"></td></tr>
 <tr><td><b>Kraft/Stabi</b></td><td>Kraft- und Stabitraining</td><td><input class="pcedit" data-pk="kraft"></td></tr>
-<tr><td><b>Ausschuetteln</b></td><td>Ganz lockerer Trabtag vor/nach Wettkampf</td><td><input class="pcedit" data-pk="aus"></td></tr>
+<tr><td><b>Ausschütteln</b></td><td>Ganz lockerer Trabtag vor/nach Wettkampf</td><td><input class="pcedit" data-pk="aus"></td></tr>
 <tr><td><b>Off</b></td><td>Ruhetag / aktive Erholung</td><td>-</td></tr>
-<tr><td><b>HM</b></td><td>Hoehenmeter im jeweiligen Lauf</td><td>-</td></tr>
+<tr><td><b>HM</b></td><td>Höhenmeter im jeweiligen Lauf</td><td>-</td></tr>
 </tbody></table></div>
 <p style="color:#6b7783;font-size:.8rem" id="paceDate"></p>
-<p><button class="btn ghost" id="paceReset">Pace-Vorgaben zuruecksetzen</button></p>
+<p><button class="btn ghost" id="paceReset">Pace-Vorgaben zurücksetzen</button></p>
 <h3>Datensicherung</h3>
 <ul>
 <li><b>Plan exportieren:</b> Speichert deinen aktuellen Stand als JSON-Datei (Backup).</li>
-<li><b>Plan importieren:</b> Laedt eine solche Datei wieder ein &ndash; auf jedem Geraet, auch nach Code-Aenderungen.</li>
-<li>Deine Online-Edits bleiben im Browser gespeichert (Schluessel bleibt stabil).</li>
+<li><b>Plan importieren:</b> Lädt eine solche Datei wieder ein &ndash; auf jedem Gerät, auch nach Code-Änderungen.</li>
+<li>Deine Online-Edits bleiben im Browser gespeichert (Schlüssel bleibt stabil).</li>
 </ul>
-<h3>Trainingsumfaenge</h3>
+<h3>Trainingsumfänge</h3>
 <ul>
 <li>Alle ESR mindestens 10 km, alle LSR mindestens 20 km.</li>
 <li>Bern-Thun-Longrun gedeckelt auf 30 km, Peak-Longrun gedeckelt auf 40 km.</li>
@@ -182,27 +182,27 @@ input.note{width:110px}
 <h3>Notiz-Punkte im Gesamtplan</h3>
 <ul>
 <li><b style="color:#ef4444">Rot:</b> Warnsignal &ndash; schmerz, krank, verletz, weh, problem, abbruch</li>
-<li><b style="color:#eab308">Gelb:</b> Ermuedung beachten &ndash; muede, schlaf, erschoepft, schwer, steif, schlapp</li>
-<li><b style="color:#14b8a6">Gruen:</b> positiv &ndash; gut, top, stark, super, bestzeit, easy</li>
-<li><b style="color:#FF6600">Orange:</b> neutrale Notiz (alle uebrigen)</li>
+<li><b style="color:#eab308">Gelb:</b> Ermüdung beachten &ndash; müde, schlaf, erschöpft, schwer, steif, schlapp</li>
+<li><b style="color:#14b8a6">Grün:</b> positiv &ndash; gut, top, stark, super, bestzeit, easy</li>
+<li><b style="color:#FF6600">Orange:</b> neutrale Notiz (alle übrigen)</li>
 </ul>
-<h3>Hoehenmeter-Ausfuehrung</h3>
+<h3>Höhenmeter-Ausführung</h3>
 <ul>
-<li><b>am Stueck:</b> Hoehenmeter in einem zusammenhaengenden Anstieg (Jungfrau-Spezifik, ab km 25-30 langer Berg).</li>
-<li><b>coupiert:</b> Hoehenmeter ueber welliges Profil verteilt (staendiges Auf und Ab). Trainiert Rhythmuswechsel.</li>
-<li><b>flach:</b> Kaum Hoehenmeter (Bahn/Ebene) &ndash; fuer Tempo-/Intervallqualitaet ohne Ermuedung.</li>
+<li><b>am Stück:</b> Höhenmeter in einem zusammenhängenden Anstieg (Jungfrau-Spezifik, ab km 25-30 langer Berg).</li>
+<li><b>coupiert:</b> Höhenmeter über welliges Profil verteilt (ständiges Auf und Ab). Trainiert Rhythmuswechsel.</li>
+<li><b>flach:</b> Kaum Höhenmeter (Bahn/Ebene) &ndash; für Tempo-/Intervallqualität ohne Ermüdung.</li>
 </ul>
 <h3>km-Berechnung Schwelle &amp; Intervall</h3>
 <ul>
 <li>Netto-Distanz aus den Wiederholungen (z.B. DL2 3x2k = 6 km, IVT 6x600m = 3,6 km)</li>
-<li><b>+ 6 km</b> fuer Ein- und Auslaufen werden automatisch dazugerechnet.</li>
+<li><b>+ 6 km</b> für Ein- und Auslaufen werden automatisch dazugerechnet.</li>
 </ul>
 <h3>Trainingsprinzipien</h3>
 <ul>
 <li>Periodisierung: Grundlage &rarr; Aufbau &rarr; Berg-Aufbau &rarr; Marathon-spezifisch &rarr; Taper</li>
-<li>Samstag als 2. Qualitaetstag mit ST DL2 &ndash; in Bergphasen als Anstiegs-DL2</li>
-<li>Long Run waechst progressiv; HM ab Berg-Aufbau bewusst 'am Stueck'</li>
-<li>Polarisierung 80/20: Easy echt langsam, damit Schluesseleinheiten hart laufbar sind</li>
+<li>Samstag als 2. Qualitätstag mit ST DL2 &ndash; in Bergphasen als Anstiegs-DL2</li>
+<li>Long Run wächst progressiv; HM ab Berg-Aufbau bewusst 'am Stück'</li>
+<li>Polarisierung 80/20: Easy echt langsam, damit Schlüsseleinheiten hart laufbar sind</li>
 <li>3:1-Deload-Rhythmus zur Superkompensation (W10, W38)</li>
 <li>Power-Hiking an Rampen &gt;15%; Fueling 60-90g KH/h in langen Berg-Longruns</li>
 </ul>
@@ -232,7 +232,7 @@ if(t.indexOf("FARTLEK")>-1)return"fartlek";if(t.indexOf("DL2")>-1)return"thresho
 if(t.indexOf("LSR")>-1)return"long";return"easy";}
 function noteColor(n){var t=(n||"").toLowerCase();if(t.replace(/\s/g,"")==="")return"";
 var red=["schmerz","krank","verletz","weh","problem","abbruch"];
-var yellow=["muede","m\u00fcde","schlaf","erschoepft","ersch\u00f6pft","schwer","steif","schlapp"];
+var yellow=["müde","muede","schlaf","erschöpft","erschoepft","schwer","steif","schlapp"];
 var green=["gut","top","stark","super","bestzeit","easy"];
 for(var i=0;i<red.length;i++){if(t.indexOf(red[i])>-1)return"#ef4444";}
 for(var y=0;y<yellow.length;y++){if(t.indexOf(yellow[y])>-1)return"#eab308";}
@@ -249,7 +249,7 @@ if(c==="threshold"){if(T.indexOf("BERG")>-1)return PACE.dl2berg;if(T.indexOf("LO
 if(c==="tempo")return PACE.tempo;
 if(c==="fartlek")return PACE.fartlek;
 if(c==="long"){if(T.indexOf("RENN-SIM")>-1)return PACE.rennsim;if(T.indexOf("LOCKER")>-1)return PACE.lsrlocker;if(T.indexOf("N.RPE")>-1||T.indexOf("HM8")>-1||T.indexOf("HM1")>-1)return"n.RPE (HM-Rate)";return PACE.lsr;}
-if(T.indexOf("AUSSCHUETTELN")>-1)return PACE.aus;
+if(T.indexOf("AUSSCHÜTTELN")>-1)return Pif(T.indexOf("AUSSCHÜTTELN")>-1)return PACE.aus;
 return PACE.esr;}
 function repKm(t){var total=0,found=false,re=/(\d+)\s*x\s*(\d+(?:[.,]\d+)?)\s*(km|k|m)/gi,m;
 while((m=re.exec(t))!==null){var reps=parseInt(m[1],10);var val=parseFloat(m[2].replace(",","."));
@@ -280,7 +280,7 @@ var DATA=
 "15|Aufbau 1|22.02.27||Kraft/Stabi~DL2 4x2k~ESR 13km~Fartlek 12km~Off~DL2 2x3k Berg HM350~LSR 28km HM350\n"+
 "16|Aufbau 1|01.03.27|Formaufbau|Kraft/Stabi~Tempo 8km~ESR 12km~IVT 8x1000m~Off~DL2 3x1k~LSR 24km HM250\n"+
 "17|Aufbau 1|08.03.27|Taper|Off~Tempo 6km~ESR 10km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"18|Aufbau 1|15.03.27|Kerzerslauf 20.03.|Off~ESR 10km~Ausschuetteln 5km~Off~Off~RACE Kerzerslauf 15km~Ausschuetteln 4km\n"+
+"18|Aufbau 1|15.03.27|Kerzerslauf 20.03.|Off~ESR 10km~Ausschütteln 5km~Off~Off~RACE Kerzerslauf 15km~Ausschütteln 4km\n"+
 "19|Regeneration|22.03.27|Regeneration|Kraft/Stabi~ESR 12km~ESR 11km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
 "20|Aufbau 2|29.03.27||Kraft/Stabi~IVT 6x400m~ESR 13km~ESR 13km~Off~DL2 3x2k~LSR 24km HM250\n"+
 "21|Aufbau 2|05.04.27||Kraft/Stabi~IVT 8x400m~ESR 14km~ESR 13km~Off~DL2 2x2k+1x3k~LSR 26km HM300\n"+
@@ -288,20 +288,20 @@ var DATA=
 "23|Aufbau 2|19.04.27||Kraft/Stabi~IVT 10x400m~ESR 15km~ESR 14km~Off~DL2 2x3k~LSR 30km HM400\n"+
 "24|Aufbau 2|26.04.27|Richtung GP Bern|Kraft/Stabi~Tempo 8km~ESR 13km~ESR 12km~Off~DL2 3x2k~LSR 24km HM250\n"+
 "25|Aufbau 2|03.05.27|Taper|Off~Tempo 5km~ESR 10km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"26|Aufbau 2|10.05.27|GP Bern 15.05.|Off~ESR 10km~Ausschuetteln 5km~Off~Off~RACE GP Bern 16km~Ausschuetteln 4km\n"+
+"26|Aufbau 2|10.05.27|GP Bern 15.05.|Off~ESR 10km~Ausschütteln 5km~Off~Off~RACE GP Bern 16km~Ausschütteln 4km\n"+
 "27|Berg-Aufbau|17.05.27|Bergaufbau|Kraft/Stabi~Fartlek 12km~ESR 13km~ESR 13km~Off~DL2 2x3k Berg HM350~LSR 26km HM800\n"+
 "28|Berg-Aufbau|24.05.27||Kraft/Stabi~DL2 3x2k~ESR 13km~ESR 14km~Off~DL2 2x3k Berg HM400~LSR 30km HM1000\n"+
 "29|Berg-Aufbau|31.05.27|Feldtest Berg|Kraft/Stabi~Fartlek 14km~ESR 14km~ESR 15km~Off~DL2 3x2k Berg HM450~LSR 34km HM1200\n"+
-"30|Berg-Aufbau|07.06.27|LGT Alpin 12.06.|Off~ESR 13km~Ausschuetteln 6km~Off~Off~RACE LGT Alpin Staffel~Ausschuetteln 5km\n"+
+"30|Berg-Aufbau|07.06.27|LGT Alpin 12.06.|Off~ESR 13km~Ausschütteln 6km~Off~Off~RACE LGT Alpin Staffel~Ausschütteln 5km\n"+
 "31|Regeneration|14.06.27|Regeneration|Kraft/Stabi~ESR 12km~ESR 11km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
 "32|Aufbau 2|21.06.27||Kraft/Stabi~IVT 6x600m~ESR 14km~ESR 13km~Off~DL2 2x3k Berg HM300~LSR 26km HM400\n"+
 "33|Aufbau 2|28.06.27|Taper Zermatt|Off~Tempo 6km~ESR 10km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"34|Aufbau 2|05.07.27|Zermatt 03.07.|Off~ESR 10km~Ausschuetteln 5km~Off~Off~RACE Zermatt 21km HM900~Ausschuetteln 4km\n"+
+"34|Aufbau 2|05.07.27|Zermatt 03.07.|Off~ESR 10km~Ausschütteln 5km~Off~Off~RACE Zermatt 21km HM900~Ausschütteln 4km\n"+
 "35|Marathon-spez.|12.07.27|Regeneration|Kraft/Stabi~ESR 14km~ESR 13km~ESR 12km~Off~DL2 3x2k~LSR 24km HM400\n"+
 "36|Marathon-spez.|19.07.27|Race-Sim Flach-Berg Fueling|Kraft/Stabi~DL2 2x2k+2x3k~ESR 15km~Fartlek 14km~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 38km HM1000\n"+
 "37|Marathon-spez.|26.07.27|Race-Sim 2|Kraft/Stabi~DL2 3x2k+1x3k~ESR 15km~IVT 6x1000m~Off~DL2 3x3k Berg HM550~LSR Renn-Sim 40km HM1200\n"+
 "38|Marathon-spez.|02.08.27|DELOAD vor Peak|Kraft/Stabi~DL2 3x2k~ESR 16km~ESR 13km~Off~DL2 2x2k Berg HM300~LSR 30km HM500\n"+
-"39|Marathon-spez.|09.08.27|PEAK groesste Race-Sim|Kraft/Stabi~DL2 3x2k+2x3k~ESR 15km~IVT 8x1000m~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 40km HM1500\n"+
+"39|Marathon-spez.|09.08.27|PEAK grösste Race-Sim|Kraft/Stabi~DL2 3x2k+2x3k~ESR 15km~IVT 8x1000m~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 40km HM1500\n"+
 "40|Marathon-spez.|16.08.27|Generalprobe|Kraft/Stabi~DL2 4x2k~ESR 14km~Fartlek 14km~Off~DL2 2x3k Berg HM400~LSR 34km HM1000\n"+
 "41|Taper|23.08.27|Taper -40%|Kraft/Stabi~DL2 2x2k~ESR 12km~Fartlek 8km~Off~DL2 2x2k Berg HM200~LSR 22km HM500\n"+
 "42|Taper|30.08.27||Off~ESR 11km~ESR 10km~Fartlek 6km~Off~ESR 13km +Renntempo~Off\n"+
@@ -328,7 +328,7 @@ function initPaceInputs(){var ins=document.querySelectorAll(".pcedit");
 ins.forEach(function(inp){var k=inp.getAttribute("data-pk");inp.value=PACE[k]||"";
 inp.onchange=function(){PACE[k]=inp.value;savePace();stampPace();
 renderOv();if(document.getElementById("wkView").className!=="hide")render();};});}
-document.getElementById("paceReset").onclick=function(){if(confirm("Pace-Vorgaben auf Standard zuruecksetzen?")){for(var k in PACE_DEF)PACE[k]=PACE_DEF[k];savePace();initPaceInputs();renderOv();if(document.getElementById("wkView").className!=="hide")render();}};
+document.getElementById("paceReset").onclick=function(){if(confirm("Pace-Vorgaben auf Standard zurücksetzen?")){for(var k in PACE_DEF)PACE[k]=PACE_DEF[k];savePace();initPaceInputs();renderOv();if(document.getElementById("wkView").className!=="hide")render();}};
 document.getElementById("expBtn").onclick=function(){
 var pd="";try{pd=localStorage.getItem(PDKEY)||"";}catch(e){}
 var payload={weeks:weeks,pace:PACE,paceDate:pd};var data=JSON.stringify(payload);var blob=new Blob([data],{type:"application/json"});
@@ -345,7 +345,7 @@ if(d.paceDate){try{localStorage.setItem(PDKEY,d.paceDate);}catch(e2){}}showPaceD
 sel();leg();renderOv();
 if(document.getElementById("wkView").className!=="hide")render();
 alert("Plan importiert: "+weeks.length+" Wochen.");}
-else{alert("Datei enthaelt keine gueltigen Plandaten.");}}
+else{alert("Datei enthält keine gültigen Plandaten.");}}
 catch(err){alert("Import fehlgeschlagen: "+err.message);}};
 r.readAsText(f);e.target.value="";};
 function ovChart(){var n=weeks.length;var W=1160,h=120,pL=40,pR=44,pT=10,pB=26;
@@ -480,7 +480,7 @@ var j=-1;for(var k=i+2;k<r.length;k++){if(INT[cls(r[k].text)]<3){j=k;break;}}
 if(j>-1){var e=r.splice(j,1)[0];r.splice(i+1,0,e);}}}
 r.forEach(function(d,k){d.day=WD[k];});w.days=r;save();render();};
 document.getElementById("reset").onclick=function(){weeks[cur]=build()[cur];save();render();renderOv();};
-document.getElementById("resetAll").onclick=function(){if(confirm("Alle Aenderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}load();sel();render();renderOv();}};
+document.getElementById("resetAll").onclick=function(){if(confirm("Alle Änderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}load();sel();render();renderOv();}};
 loadPace();load();sel();leg();initPaceInputs();showPaceDate();renderOv();
 S.textContent="Trainingsplan korrekt geladen.";
 }catch(err){S.className="bad";S.textContent="Fehler: "+err.message;}

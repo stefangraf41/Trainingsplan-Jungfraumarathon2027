@@ -217,7 +217,7 @@ try{
 var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",tempo:"#ec4899",fartlek:"#14b8a6",strength:"#64748b",rest:"#9aa5b1",race:"#FF6600"};
 var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo (DL1)",fartlek:"Fartlek",strength:"Kraft/Stabi",rest:"Ruhe",race:"Wettkampf"};
 var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
-var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v11",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
+var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v12",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
 var PACE_DEF={esr:"4:45-5:15/km",lsr:"4:15-4:35/km",lsrlocker:"4:45-5:05/km",rennsim:"3:55-4:10/km flach, dann n.RPE",ivt:"3:10-3:30/km",dl2:"3:30-3:40/km",dl2berg:"3:40-4:10/km +HM",dl2locker:"3:35-3:45/km",tempo:"3:40-4:00/km",fartlek:"4:00-4:20/km wechselnd",kraft:"RPE 6-8",aus:"5:00-5:30/km"};
 var PACE={};
 function loadPace(){try{var s=localStorage.getItem(PKEY);var o=s?JSON.parse(s):{};for(var k in PACE_DEF){PACE[k]=(o&&o[k])?o[k]:PACE_DEF[k];}}catch(e){for(var k2 in PACE_DEF)PACE[k2]=PACE_DEF[k2];}}
@@ -264,48 +264,48 @@ function kw(s){var d=parseD(s);if(!d)return"?";var t=new Date(d.getFullYear(),d.
 var dy=(t.getDay()+6)%7;t.setDate(t.getDate()-dy+3);var f=new Date(t.getFullYear(),0,4);
 var fy=(f.getDay()+6)%7;f.setDate(f.getDate()-fy+3);return 1+Math.round((t-f)/604800000);}
 var DATA=
-"1|Grundlage 1|16.11.26||Kraft/Stabi~ESR 13km~ESR 11km~ESR 12km~Off~DL2 2x2k~LSR 20km HM150\n"+
-"2|Grundlage 1|23.11.26||Kraft/Stabi~ESR 14km~ESR 12km~ESR 13km~Off~DL2 3x2k~LSR 22km HM200\n"+
-"3|Grundlage 1|30.11.26||Kraft/Stabi~Fartlek 10km~ESR 13km~ESR 14km~Off~DL2 2x2k+1x1k~LSR 24km HM250\n"+
-"4|Grundlage 1|07.12.26||Kraft/Stabi~ESR 15km~ESR 13km~ESR 16km~Off~DL2 3x2k~LSR 26km HM300\n"+
-"5|Grundlage 1|14.12.26||Kraft/Stabi~Fartlek 12km~ESR 14km~ESR 15km~Off~DL2 2x3k~LSR 28km HM350\n"+
-"6|Grundlage 1|21.12.26|Weihnachtswoche Vereinslauf|Kraft/Stabi~ESR 15km~ESR 11km~ESR 13km~Off~DL2 2x2k~LSR 30km Bern-Thun HM100\n"+
-"7|Grundlage 2|28.12.26||Kraft/Stabi~IVT 6x600m~ESR 13km~ESR 16km~Off~DL2 3x2k~LSR 30km HM300\n"+
-"8|Grundlage 2|04.01.27||Kraft/Stabi~IVT 8x600m~ESR 14km~ESR 16km~Off~DL2 2x2k+1x3k~LSR 32km HM350\n"+
-"9|Grundlage 2|11.01.27||Kraft/Stabi~DL2 3x1km~ESR 14km~ESR 17km~Off~DL2 2x3k~LSR 32km HM600\n"+
-"10|Grundlage 2|18.01.27|DELOAD 3:1|Kraft/Stabi~IVT 8x800m~ESR 15km~ESR 17km~Off~DL2 2x2k locker~LSR 26km HM250\n"+
-"11|Grundlage 2|25.01.27||Kraft/Stabi~DL2 2x1k+2x2k~ESR 15km~ESR 18km~Off~DL2 2x3k Berg HM250~LSR 34km HM800\n"+
-"12|Grundlage 2|01.02.27|Feldtest Schwelle|Kraft/Stabi~IVT 10x800m~ESR 16km~ESR 18km~Off~DL2 3x2k Berg HM300~LSR 36km HM1000\n"+
-"13|Aufbau 1|08.02.27||Kraft/Stabi~DL2 3x2k~ESR 13km~Fartlek 14km~Off~DL2 2x3k Berg HM350~LSR 34km HM1000\n"+
-"14|Aufbau 1|15.02.27||Kraft/Stabi~DL2 2x2k+1x3k~ESR 13km~IVT 6x1000m~Off~DL2 2x2k Berg HM300~LSR 32km HM400\n"+
-"15|Aufbau 1|22.02.27||Kraft/Stabi~DL2 4x2k~ESR 13km~Fartlek 12km~Off~DL2 2x3k Berg HM350~LSR 28km HM350\n"+
-"16|Aufbau 1|01.03.27|Formaufbau|Kraft/Stabi~Tempo 8km~ESR 12km~IVT 8x1000m~Off~DL2 3x1k~LSR 24km HM250\n"+
-"17|Aufbau 1|08.03.27|Taper|Off~Tempo 6km~ESR 10km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"18|Aufbau 1|15.03.27|Kerzerslauf 20.03.|Off~ESR 10km~Ausschütteln 5km~Off~Off~RACE Kerzerslauf 15km~Ausschütteln 4km\n"+
-"19|Regeneration|22.03.27|Regeneration|Kraft/Stabi~ESR 12km~ESR 11km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
-"20|Aufbau 2|29.03.27||Kraft/Stabi~IVT 6x400m~ESR 13km~ESR 13km~Off~DL2 3x2k~LSR 24km HM250\n"+
-"21|Aufbau 2|05.04.27||Kraft/Stabi~IVT 8x400m~ESR 14km~ESR 13km~Off~DL2 2x2k+1x3k~LSR 26km HM300\n"+
-"22|Aufbau 2|12.04.27||Kraft/Stabi~Tempo 6km~ESR 14km~ESR 14km~Off~DL2 3x2k~LSR 28km HM350\n"+
-"23|Aufbau 2|19.04.27||Kraft/Stabi~IVT 10x400m~ESR 15km~ESR 14km~Off~DL2 2x3k~LSR 30km HM400\n"+
-"24|Aufbau 2|26.04.27|Richtung GP Bern|Kraft/Stabi~Tempo 8km~ESR 13km~ESR 12km~Off~DL2 3x2k~LSR 24km HM250\n"+
-"25|Aufbau 2|03.05.27|Taper|Off~Tempo 5km~ESR 10km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"26|Aufbau 2|10.05.27|GP Bern 15.05.|Off~ESR 10km~Ausschütteln 5km~Off~Off~RACE GP Bern 16km~Ausschütteln 4km\n"+
-"27|Berg-Aufbau|17.05.27|Bergaufbau|Kraft/Stabi~Fartlek 12km~ESR 13km~ESR 13km~Off~DL2 2x3k Berg HM350~LSR 26km HM800\n"+
-"28|Berg-Aufbau|24.05.27||Kraft/Stabi~DL2 3x2k~ESR 13km~ESR 14km~Off~DL2 2x3k Berg HM400~LSR 30km HM1000\n"+
-"29|Berg-Aufbau|31.05.27|Feldtest Berg|Kraft/Stabi~Fartlek 14km~ESR 14km~ESR 15km~Off~DL2 3x2k Berg HM450~LSR 34km HM1200\n"+
-"30|Berg-Aufbau|07.06.27|LGT Alpin 12.06.|Off~ESR 13km~Ausschütteln 6km~Off~Off~RACE LGT Alpin Staffel~Ausschütteln 5km\n"+
-"31|Regeneration|14.06.27|Regeneration|Kraft/Stabi~ESR 12km~ESR 11km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
-"32|Aufbau 2|21.06.27||Kraft/Stabi~IVT 6x600m~ESR 14km~ESR 13km~Off~DL2 2x3k Berg HM300~LSR 26km HM400\n"+
-"33|Aufbau 2|28.06.27|Taper Zermatt|Off~Tempo 6km~ESR 10km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"34|Aufbau 2|05.07.27|Zermatt 03.07.|Off~ESR 10km~Ausschütteln 5km~Off~Off~RACE Zermatt 21km HM900~Ausschütteln 4km\n"+
-"35|Marathon-spez.|12.07.27|Regeneration|Kraft/Stabi~ESR 14km~ESR 13km~ESR 12km~Off~DL2 3x2k~LSR 24km HM400\n"+
-"36|Marathon-spez.|19.07.27|Race-Sim Flach-Berg Fueling|Kraft/Stabi~DL2 2x2k+2x3k~ESR 15km~Fartlek 14km~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 38km HM1000\n"+
-"37|Marathon-spez.|26.07.27|Race-Sim 2|Kraft/Stabi~DL2 3x2k+1x3k~ESR 15km~IVT 6x1000m~Off~DL2 3x3k Berg HM550~LSR Renn-Sim 40km HM1200\n"+
-"38|Marathon-spez.|02.08.27|DELOAD vor Peak|Kraft/Stabi~DL2 3x2k~ESR 16km~ESR 13km~Off~DL2 2x2k Berg HM300~LSR 30km HM500\n"+
-"39|Marathon-spez.|09.08.27|PEAK grösste Race-Sim|Kraft/Stabi~DL2 3x2k+2x3k~ESR 15km~IVT 8x1000m~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 40km HM1500\n"+
-"40|Marathon-spez.|16.08.27|Generalprobe|Kraft/Stabi~DL2 4x2k~ESR 14km~Fartlek 14km~Off~DL2 2x3k Berg HM400~LSR 34km HM1000\n"+
-"41|Taper|23.08.27|Taper -40%|Kraft/Stabi~DL2 2x2k~ESR 12km~Fartlek 8km~Off~DL2 2x2k Berg HM200~LSR 22km HM500\n"+
-"42|Taper|30.08.27||Off~ESR 11km~ESR 10km~Fartlek 6km~Off~ESR 13km +Renntempo~Off\n"+
+"1|Grundlage 1|16.11.26||Kraft/Stabi~ESR 11km~ESR 13km~ESR 12km~Off~DL2 2x2k~LSR 20km HM150\n"+
+"2|Grundlage 1|23.11.26||Kraft/Stabi~ESR 12km~ESR 14km~ESR 13km~Off~DL2 3x2k~LSR 22km HM200\n"+
+"3|Grundlage 1|30.11.26||Kraft/Stabi~ESR 13km~Fartlek 10km~ESR 14km~Off~DL2 2x2k+1x1k~LSR 24km HM250\n"+
+"4|Grundlage 1|07.12.26||Kraft/Stabi~ESR 13km~ESR 15km~ESR 16km~Off~DL2 3x2k~LSR 26km HM300\n"+
+"5|Grundlage 1|14.12.26||Kraft/Stabi~ESR 14km~Fartlek 12km~ESR 15km~Off~DL2 2x3k~LSR 28km HM350\n"+
+"6|Grundlage 1|21.12.26|Weihnachtswoche Vereinslauf|Kraft/Stabi~ESR 11km~ESR 15km~ESR 13km~Off~DL2 2x2k~LSR 30km Bern-Thun HM100\n"+
+"7|Grundlage 2|28.12.26||Kraft/Stabi~ESR 13km~IVT 6x600m~ESR 16km~Off~DL2 3x2k~LSR 30km HM300\n"+
+"8|Grundlage 2|04.01.27||Kraft/Stabi~ESR 14km~IVT 8x600m~ESR 16km~Off~DL2 2x2k+1x3k~LSR 32km HM350\n"+
+"9|Grundlage 2|11.01.27||Kraft/Stabi~ESR 14km~DL2 3x1km~ESR 17km~Off~DL2 2x3k~LSR 32km HM600\n"+
+"10|Grundlage 2|18.01.27|DELOAD 3:1|Kraft/Stabi~ESR 15km~IVT 8x800m~ESR 17km~Off~DL2 2x2k locker~LSR 26km HM250\n"+
+"11|Grundlage 2|25.01.27||Kraft/Stabi~ESR 15km~DL2 2x1k+2x2k~ESR 18km~Off~DL2 2x3k Berg HM250~LSR 34km HM800\n"+
+"12|Grundlage 2|01.02.27|Feldtest Schwelle|Kraft/Stabi~ESR 16km~IVT 10x800m~ESR 18km~Off~DL2 3x2k Berg HM300~LSR 36km HM1000\n"+
+"13|Aufbau 1|08.02.27||Kraft/Stabi~ESR 13km~DL2 3x2k~Fartlek 14km~Off~DL2 2x3k Berg HM350~LSR 34km HM1000\n"+
+"14|Aufbau 1|15.02.27||Kraft/Stabi~ESR 13km~DL2 2x2k+1x3k~IVT 6x1000m~Off~DL2 2x2k Berg HM300~LSR 32km HM400\n"+
+"15|Aufbau 1|22.02.27||Kraft/Stabi~ESR 13km~DL2 4x2k~Fartlek 12km~Off~DL2 2x3k Berg HM350~LSR 28km HM350\n"+
+"16|Aufbau 1|01.03.27|Formaufbau|Kraft/Stabi~ESR 12km~Tempo 8km~IVT 8x1000m~Off~DL2 3x1k~LSR 24km HM250\n"+
+"17|Aufbau 1|08.03.27|Taper|Off~ESR 10km~Tempo 6km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
+"18|Aufbau 1|15.03.27|Kerzerslauf 20.03.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE Kerzerslauf 15km~Ausschütteln 4km\n"+
+"19|Regeneration|22.03.27|Regeneration|Kraft/Stabi~ESR 11km~ESR 12km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
+"20|Aufbau 2|29.03.27||Kraft/Stabi~ESR 13km~IVT 6x400m~ESR 13km~Off~DL2 3x2k~LSR 24km HM250\n"+
+"21|Aufbau 2|05.04.27||Kraft/Stabi~ESR 14km~IVT 8x400m~ESR 13km~Off~DL2 2x2k+1x3k~LSR 26km HM300\n"+
+"22|Aufbau 2|12.04.27||Kraft/Stabi~ESR 14km~Tempo 6km~ESR 14km~Off~DL2 3x2k~LSR 28km HM350\n"+
+"23|Aufbau 2|19.04.27||Kraft/Stabi~ESR 15km~IVT 10x400m~ESR 14km~Off~DL2 2x3k~LSR 30km HM400\n"+
+"24|Aufbau 2|26.04.27|Richtung GP Bern|Kraft/Stabi~ESR 13km~Tempo 8km~ESR 12km~Off~DL2 3x2k~LSR 24km HM250\n"+
+"25|Aufbau 2|03.05.27|Taper|Off~ESR 10km~Tempo 5km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
+"26|Aufbau 2|10.05.27|GP Bern 15.05.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE GP Bern 16km~Ausschütteln 4km\n"+
+"27|Berg-Aufbau|17.05.27|Bergaufbau|Kraft/Stabi~ESR 13km~Fartlek 12km~ESR 13km~Off~DL2 2x3k Berg HM350~LSR 26km HM800\n"+
+"28|Berg-Aufbau|24.05.27||Kraft/Stabi~ESR 13km~DL2 3x2k~ESR 14km~Off~DL2 2x3k Berg HM400~LSR 30km HM1000\n"+
+"29|Berg-Aufbau|31.05.27|Feldtest Berg|Kraft/Stabi~ESR 14km~Fartlek 14km~ESR 15km~Off~DL2 3x2k Berg HM450~LSR 34km HM1200\n"+
+"30|Berg-Aufbau|07.06.27|LGT Alpin 12.06.|Off~Ausschütteln 6km~ESR 13km~Off~Off~RACE LGT Alpin Staffel~Ausschütteln 5km\n"+
+"31|Regeneration|14.06.27|Regeneration|Kraft/Stabi~ESR 11km~ESR 12km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
+"32|Aufbau 2|21.06.27||Kraft/Stabi~ESR 13km~IVT 6x600m~ESR 13km~Off~DL2 2x3k Berg HM300~LSR 26km HM400\n"+
+"33|Aufbau 2|28.06.27|Taper Zermatt|Off~ESR 10km~Tempo 6km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
+"34|Aufbau 2|05.07.27|Zermatt 03.07.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE Zermatt 21km HM900~Ausschütteln 4km\n"+
+"35|Marathon-spez.|12.07.27|Regeneration|Kraft/Stabi~ESR 13km~ESR 14km~ESR 12km~Off~DL2 3x2k~LSR 24km HM400\n"+
+"36|Marathon-spez.|19.07.27|Race-Sim Flach-Berg Fueling|Kraft/Stabi~ESR 15km~DL2 2x2k+2x3k~Fartlek 14km~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 38km HM1000\n"+
+"37|Marathon-spez.|26.07.27|Race-Sim 2|Kraft/Stabi~ESR 15km~DL2 3x2k+1x3k~IVT 6x1000m~Off~DL2 3x3k Berg HM550~LSR Renn-Sim 40km HM1200\n"+
+"38|Marathon-spez.|02.08.27|DELOAD vor Peak|Kraft/Stabi~ESR 16km~DL2 3x2k~ESR 13km~Off~DL2 2x2k Berg HM300~LSR 30km HM500\n"+
+"39|Marathon-spez.|09.08.27|PEAK grösste Race-Sim|Kraft/Stabi~ESR 15km~DL2 3x2k+2x3k~IVT 8x1000m~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 40km HM1500\n"+
+"40|Marathon-spez.|16.08.27|Generalprobe|Kraft/Stabi~ESR 14km~DL2 4x2k~Fartlek 14km~Off~DL2 2x3k Berg HM400~LSR 34km HM1000\n"+
+"41|Taper|23.08.27|Taper -40%|Kraft/Stabi~ESR 12km~DL2 2x2k~Fartlek 8km~Off~DL2 2x2k Berg HM200~LSR 22km HM500\n"+
+"42|Taper|30.08.27||Off~ESR 10km~ESR 11km~Fartlek 6km~Off~ESR 13km +Renntempo~Off\n"+
 "43|Race|06.09.27|JUNGFRAU-MARATHON 11.09.|Off~ESR 10km~ESR 10km~Off~Off~RACE DAY 42.2km HM1829~Ausrollen";
 function build(){return DATA.split("\n").map(function(line){
 var p=line.split("|");var days=p[4].split("~").map(function(t,i){

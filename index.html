@@ -41,8 +41,10 @@ th{background:var(--blue);color:#fff;font-weight:600}
 .ov .daycell{cursor:pointer}
 .ov .daycell.dragover{box-shadow:inset 0 0 0 2px var(--orange)}
 .ov .daycell.dragging{opacity:.4}
-.ov .daycell textarea.celledit{width:130px;min-height:44px;background:#fff;color:var(--txt);border:1px solid var(--blue2);border-radius:6px;padding:5px;font:inherit;font-size:.78rem;resize:vertical}
+.ov .daycell textarea.celledit{width:130px;min-height:44px;background:#fff;color:var(--txt);border:1px solid var(--blue2);border-radius:6px;padding:5px;font:inherit;font-size:.ov .daycell textarea.celledit{width:130px;min-height:44px;background:#fff;color:var(--txt);border:1px solid var(--blue2);border-radius:6px;padding:5px;font:inherit;font-size:.78rem;resize:vertical}
 .cell{border-radius:4px;padding:3px 5px;display:block;font-size:.78rem;line-height:1.2;position:relative}
+.cell.done{opacity:.65}
+.donetick{color:#14b8a6;font-weight:700;margin-right:3px}
 .pc{color:var(--muted);font-size:.72rem;display:block;margin-top:2px}
 .notedot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:4px;cursor:help;vertical-align:middle}
 tr.row{cursor:grab}tr.row:hover td{background:#f6f9fc}
@@ -119,8 +121,8 @@ input.note{width:110px}
 <div id="ovView">
 <h3 style="color:#004B8D;margin:4px 0 8px">Saisonverlauf: Wochen-km &amp; Höhenmeter</h3>
 <div id="ovChart"></div>
-<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Höhenmeter</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermüdung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span><span>&#9888; = zwei harte Tage in Folge</span></div>
-<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail. &#9888; markiert unausgewogene Wochen.</span></div>
+<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Höhenmeter</span><span>&#9989; = erledigt</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermüdung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span><span>&#9888; = zwei harte Tage in Folge</span></div>
+<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail. &#9989; = erledigt, &#9888; = zwei harte Tage in Folge.</span></div>
 <div class="scroll"><table class="ov"><thead><tr>
 <th>KW</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
 </tr></thead><tbody id="ovBody"></tbody></table></div>
@@ -179,6 +181,7 @@ input.note{width:110px}
 <ul>
 <li>Alle ESR mindestens 10 km, alle LSR mindestens 20 km.</li>
 <li>Bern-Thun-Longrun gedeckelt auf 30 km, Peak-Longrun gedeckelt auf 40 km.</li>
+<li>Wochen 44-52 (nach dem Marathon) bewusst offen &ndash; per Klick befüllbar.</li>
 </ul>
 <h3>Notiz-Punkte im Gesamtplan</h3>
 <ul>
@@ -217,7 +220,7 @@ try{
 var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",tempo:"#ec4899",fartlek:"#14b8a6",strength:"#64748b",rest:"#9aa5b1",race:"#FF6600"};
 var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo (DL1)",fartlek:"Fartlek",strength:"Kraft/Stabi",rest:"Ruhe",race:"Wettkampf"};
 var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
-var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v12",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
+var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v13",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
 var PACE_DEF={esr:"4:45-5:15/km",lsr:"4:15-4:35/km",lsrlocker:"4:45-5:05/km",rennsim:"3:55-4:10/km flach, dann n.RPE",ivt:"3:10-3:30/km",dl2:"3:30-3:40/km",dl2berg:"3:40-4:10/km +HM",dl2locker:"3:35-3:45/km",tempo:"3:40-4:00/km",fartlek:"4:00-4:20/km wechselnd",kraft:"RPE 6-8",aus:"5:00-5:30/km"};
 var PACE={};
 function loadPace(){try{var s=localStorage.getItem(PKEY);var o=s?JSON.parse(s):{};for(var k in PACE_DEF){PACE[k]=(o&&o[k])?o[k]:PACE_DEF[k];}}catch(e){for(var k2 in PACE_DEF)PACE[k2]=PACE_DEF[k2];}}
@@ -306,7 +309,16 @@ var DATA=
 "40|Marathon-spez.|16.08.27|Generalprobe|Kraft/Stabi~ESR 14km~DL2 4x2k~Fartlek 14km~Off~DL2 2x3k Berg HM400~LSR 34km HM1000\n"+
 "41|Taper|23.08.27|Taper -40%|Kraft/Stabi~ESR 12km~DL2 2x2k~Fartlek 8km~Off~DL2 2x2k Berg HM200~LSR 22km HM500\n"+
 "42|Taper|30.08.27||Off~ESR 10km~ESR 11km~Fartlek 6km~Off~ESR 13km +Renntempo~Off\n"+
-"43|Race|06.09.27|JUNGFRAU-MARATHON 11.09.|Off~ESR 10km~ESR 10km~Off~Off~RACE DAY 42.2km HM1829~Ausrollen";
+"43|Race|06.09.27|JUNGFRAU-MARATHON 11.09.|Off~ESR 10km~ESR 10km~Off~Off~RACE DAY 42.2km HM1829~Ausrollen\n"+
+"44|Erholung|13.09.27|Nach dem Marathon - offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"45|Erholung|20.09.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"46|Offen|27.09.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"47|Offen|04.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"48|Offen|11.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"49|Offen|18.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"50|Offen|25.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"51|Offen|01.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"52|Offen|08.11.27|offen|Off~Off~Off~Off~Off~Off~Off";
 function build(){return DATA.split("\n").map(function(line){
 var p=line.split("|");var days=p[4].split("~").map(function(t,i){
 return{day:WD[i],text:t,km:km(t),hm:hm(t),done:false,note:""};});
@@ -380,7 +392,8 @@ var warn=imb?'<span class="warnicon" title="Zwei harte Tage in Folge">&#9888;</s
 var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+warn+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
 w.days.forEach(function(d,di){var t=cls(d.text);var nc=noteColor(d.note);
 var dot=nc?'<span class="notedot" style="background:'+nc+'" title="'+esc(d.note)+'"></span>':"";
-html+='<td class="daycell" draggable="true" data-wi="'+wi+'" data-di="'+di+'"><span class="cell" style="background:'+COL[t]+'22;border-left:3px solid '+COL[t]+'">'+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
+var tick=d.done?'<span class="donetick">&#9989;</span>':"";
+html+='<td class="daycell" draggable="true" data-wi="'+wi+'" data-di="'+di+'"><span class="cell'+(d.done?" done":"")+'" style="background:'+COL[t]+'22;border-left:3px solid '+COL[t]+'">'+tick+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
 html+='<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td><td>'+esc(w.bemerkung)+'</td>';
 tr.innerHTML=html;
 tr.querySelector(".wk").onclick=function(){cur=wi;showView("wk");render();};

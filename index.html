@@ -365,7 +365,7 @@ alert("Plan importiert: "+weeks.length+" Wochen.");}
 else{alert("Datei enthält keine gültigen Plandaten.");}}
 catch(err){alert("Import fehlgeschlagen: "+err.message);}};
 r.readAsText(f);e.target.value="";};
-function raceTimeline(){var n=weeks.length;var W=1160,pL=30,pR=30,bandTop=10,bandH=34,axisY=78,h=150;
+function raceTimeline(){var n=weeks.length;var W=1160,pL=30,pR=30,bandTop=24,bandH=30,axisY=84,h=156;
 var pw=W-pL-pR;function X(i){return pL+(n<=1?0:i/(n-1)*pw);}
 var seg=W/n;var s="";
 weeks.forEach(function(w,i){var x0=pL-seg/2+(pw/(n-1||1))*i;});

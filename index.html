@@ -365,30 +365,26 @@ alert("Plan importiert: "+weeks.length+" Wochen.");}
 else{alert("Datei enthält keine gültigen Plandaten.");}}
 catch(err){alert("Import fehlgeschlagen: "+err.message);}};
 r.readAsText(f);e.target.value="";};
-function raceTimeline(){var n=weeks.length;var W=1160,pL=30,pR=30,bandTop=24,bandH=30,axisY=84,h=156;
+function raceTimeline(){var n=weeks.length;var W=1160,pL=30,pR=30,bandTop=32,bandH=26,axisY=78,h=132;
 var pw=W-pL-pR;function X(i){return pL+(n<=1?0:i/(n-1)*pw);}
-var seg=W/n;var s="";
-weeks.forEach(function(w,i){var x0=pL-seg/2+(pw/(n-1||1))*i;});
-var bandW=pw/(n-1||1);
+var bandW=pw/(n-1||1);var s="";
 weeks.forEach(function(w,i){var cx=X(i);var col=PHCOL[w.phase]||"#e6eaef";
-var x=cx-bandW/2;var wgt=bandW;if(i===0){x=pL-bandW/2;}
 s+='<rect x="'+(cx-bandW/2)+'" y="'+bandTop+'" width="'+(bandW+0.6)+'" height="'+bandH+'" fill="'+col+'"/>';});
-var last="";weeks.forEach(function(w,i){if(w.phase!==last){var cx=X(i);
-s+='<text x="'+(cx)+'" y="'+(bandTop-7)+'" fill="#2b3138" font-size="9" font-weight="700" text-anchor="start">'+esc(w.phase)+'</text>';last=w.phase;}});
+var last="",lvl=0;weeks.forEach(function(w,i){if(w.phase!==last){var cx=X(i);var ly=(lvl%2===0)?13:25;
+s+='<line x1="'+cx+'" y1="'+(ly+2)+'" x2="'+cx+'" y2="'+bandTop+'" stroke="#c4ccd6" stroke-width="1"/>';
+s+='<text x="'+cx+'" y="'+ly+'" fill="#2b3138" font-size="9" font-weight="700" text-anchor="start">'+esc(w.phase)+'</text>';
+last=w.phase;lvl++;}});
 s+='<line x1="'+pL+'" y1="'+axisY+'" x2="'+(W-pR)+'" y2="'+axisY+'" stroke="#d9dee3" stroke-width="2"/>';
-var up=true;
 weeks.forEach(function(w,i){var race=null;w.days.forEach(function(d){if(cls(d.text)==="race")race=d;});
 if(race){var x=X(i);var name=race.text.replace(/^RACE\s*/i,"").replace(/\s*HM\d+/i,"").replace(/DAY\s*/i,"").trim();
 if(w.bemerkung){var bm=w.bemerkung.split(" ")[0];if(bm&&bm.length>2)name=bm;}
 if(isMountainRace(race.text)||isMountainRace(w.bemerkung))name="\uD83C\uDFD4 "+name;
-var ly=up?(axisY-14):(axisY+22);var ny=up?(axisY-26):(axisY+34);
-s+='<line x1="'+x+'" y1="'+axisY+'" x2="'+x+'" y2="'+(up?axisY-12:axisY+12)+'" stroke="#FF6600" stroke-width="2"/>';
+s+='<line x1="'+x+'" y1="'+axisY+'" x2="'+x+'" y2="'+(axisY+12)+'" stroke="#FF6600" stroke-width="2"/>';
 s+='<circle cx="'+x+'" cy="'+axisY+'" r="5" fill="#FF6600"/>';
-s+='<text x="'+x+'" y="'+ly+'" fill="#004B8D" font-size="10" font-weight="700" text-anchor="middle">KW'+kw(w.datum)+'</text>';
-s+='<text x="'+x+'" y="'+ny+'" fill="#2b3138" font-size="9" text-anchor="middle">'+esc(name).slice(0,22)+'</text>';
-up=!up;}});
+s+='<text x="'+x+'" y="'+(axisY+24)+'" fill="#004B8D" font-size="10" font-weight="700" text-anchor="middle">KW'+kw(w.datum)+'</text>';
+s+='<text x="'+x+'" y="'+(axisY+36)+'" fill="#2b3138" font-size="9" text-anchor="middle">'+esc(name).slice(0,22)+'</text>';}});
 document.getElementById("ovTimeline").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
-function phaseLegend(){var seen=[],order=[];weeks.forEach(function(w){if(order.indexOf(w.phase)<0)order.push(w.phase);});
+function phaseLegend(){var order=[];weeks.forEach(function(w){if(order.indexOf(w.phase)<0)order.push(w.phase);});
 var l=document.getElementById("phaseLegend");l.innerHTML="";
 order.forEach(function(p){l.innerHTML+='<span><i class="dot" style="background:'+(PHCOL[p]||"#e6eaef")+'"></i>'+esc(p)+'</span>';});}
 var ovDrag=null;

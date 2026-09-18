@@ -27,9 +27,8 @@ input.bem{flex:1;min-width:200px;background:#fff;color:var(--txt);border:1px sol
 .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-width:96px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 .stat b{font-size:1.25rem;display:block;color:var(--blue)}.stat span{color:var(--muted);font-size:.72rem}
 .phase{color:var(--muted);font-size:.9rem;margin:2px 0 10px}
-#chart,#ovChart,#ovTimeline{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-#chart svg,#ovChart svg,#ovTimeline svg{display:block;margin:0 auto;width:100%}
-#ovChart svg{max-width:560px}
+#chart,#ovTimeline{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+#chart svg,#ovTimeline svg{display:block;margin:0 auto;width:100%}
 #chart svg{max-width:300px}
 table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.83rem}
@@ -119,12 +118,10 @@ input.note{width:110px}
 </div>
 
 <div id="ovView">
-<h3 style="color:#004B8D;margin:4px 0 8px">Saisonverlauf: Wochen-km &amp; Höhenmeter</h3>
-<div id="ovChart"></div>
-<h3 style="color:#004B8D;margin:10px 0 6px">Wettkampf-Timeline</h3>
+<h3 style="color:#004B8D;margin:4px 0 6px">Timeline: Trainingsphasen &amp; Wettkämpfe</h3>
 <div id="ovTimeline"></div>
-<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Höhenmeter</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermüdung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span></div>
-<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail.</span></div>
+<div class="legend" id="phaseLegend"></div>
+<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail. &#127956; = Berglauf.</span></div>
 <div class="scroll"><table class="ov"><thead><tr>
 <th>KW</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
 </tr></thead><tbody id="ovBody"></tbody></table></div>
@@ -170,6 +167,7 @@ input.note{width:110px}
 <tr><td><b>n.RPE</b></td><td>Nach Anstrengungsempfinden (Rate of Perceived Exertion) &ndash; Tempo nach Gefühl statt fester Pace, v.a. an langen Berganstiegen</td><td>gleichmässig hart, aber kontrolliert (ca. RPE 6-7)</td></tr>
 <tr><td><b>Off</b></td><td>Ruhetag / aktive Erholung</td><td>-</td></tr>
 <tr><td><b>HM</b></td><td>Höhenmeter im jeweiligen Lauf</td><td>-</td></tr>
+<tr><td><b>&#127956;</b></td><td>Berglauf (LGT Alpin, Zermatt, Jungfrau-Marathon)</td><td>-</td></tr>
 </tbody></table></div>
 <p style="color:#6b7783;font-size:.8rem" id="paceDate"></p>
 <p><button class="btn ghost" id="paceReset">Pace-Vorgaben zurücksetzen</button></p>
@@ -217,6 +215,7 @@ var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",te
 var BGL={easy:"#e8f0fe",long:"#fde5e5",interval:"#efe6fb",threshold:"#fdf0d9",tempo:"#fce4ef",fartlek:"#dff5ef",strength:"#eef1f5",rest:"#f2f4f7",race:"#ffe9d6"};
 var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo (DL1)",fartlek:"Fartlek",strength:"Kraft/Stabi",rest:"Ruhe",race:"Wettkampf"};
 var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
+var PHCOL={"Grundlage 1":"#8ecae6","Grundlage 2":"#4fa3c7","Aufbau 1":"#ffd166","Aufbau 2":"#f4a261","Regeneration":"#b8c0cc","Berg-Aufbau":"#8d5bd6","Marathon-spez.":"#ef6f6c","Taper":"#a8dadc","Race":"#FF6600","Erholung":"#c7d2cc","Offen":"#e6eaef"};
 var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v14",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
 var PACE_DEF={esr:"4:45-5:15/km",lsr:"4:15-4:35/km",lsrlocker:"4:45-5:05/km",rennsim:"3:55-4:10/km flach, dann n.RPE",ivt:"3:10-3:30/km",dl2:"3:30-3:40/km",dl2berg:"3:40-4:10/km +HM",dl2locker:"3:35-3:45/km",tempo:"3:40-4:00/km",fartlek:"4:00-4:20/km wechselnd",kraft:"RPE 6-8",aus:"5:00-5:30/km"};
 var PACE={};
@@ -239,6 +238,7 @@ for(var i=0;i<red.length;i++){if(t.indexOf(red[i])>-1)return"#ef4444";}
 for(var y=0;y<yellow.length;y++){if(t.indexOf(yellow[y])>-1)return"#eab308";}
 for(var j=0;j<green.length;j++){if(t.indexOf(green[j])>-1)return"#14b8a6";}
 return"#FF6600";}
+function isMountainRace(name){var u=(name||"").toUpperCase();return u.indexOf("LGT")>-1||u.indexOf("ZERMATT")>-1||u.indexOf("JUNGFRAU")>-1||u.indexOf("RACE DAY")>-1;}
 function imbalanced(w){var hard=w.days.map(function(d){return INT[cls(d.text)]>=3;});
 for(var i=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1])return true;}return false;}
 function pace(t){var c=cls(t),T=(t||"").toUpperCase();
@@ -365,41 +365,32 @@ alert("Plan importiert: "+weeks.length+" Wochen.");}
 else{alert("Datei enthält keine gültigen Plandaten.");}}
 catch(err){alert("Import fehlgeschlagen: "+err.message);}};
 r.readAsText(f);e.target.value="";};
-function ovChart(){var n=weeks.length;var W=1160,h=120,pL=40,pR=44,pT=10,pB=26;
-var kmA=weeks.map(function(w){return w.days.reduce(function(s,d){return s+d.km;},0);});
-var hmA=weeks.map(function(w){return w.days.reduce(function(s,d){return s+d.hm;},0);});
-var kmMax=Math.max.apply(null,kmA)||1,hmMax=Math.max.apply(null,hmA)||1;
-var pw=W-pL-pR,ph=h-pT-pB;
-function X(i){return pL+(n<=1?0:i/(n-1)*pw);}
-function YK(v){return pT+ph-v/kmMax*ph;}
-function YH(v){return pT+ph-v/hmMax*ph;}
-var s='<line x1="'+pL+'" y1="'+(pT+ph)+'" x2="'+(W-pR)+'" y2="'+(pT+ph)+'" stroke="#e6eaef"/>';
-var hmp=hmA.map(function(v,i){return X(i)+","+YH(v);}).join(" ");
-var kmp=kmA.map(function(v,i){return X(i)+","+YK(v);}).join(" ");
-s+='<polyline points="'+hmp+'" fill="none" stroke="#FF6600" stroke-width="2"/>';
-s+='<polyline points="'+kmp+'" fill="none" stroke="#007ACE" stroke-width="2.5"/>';
-weeks.forEach(function(w,i){
-s+='<circle cx="'+X(i)+'" cy="'+YK(kmA[i])+'" r="2" fill="#007ACE"/>';
-s+='<circle cx="'+X(i)+'" cy="'+YH(hmA[i])+'" r="2" fill="#FF6600"/>';
-if(i%3===0||i===n-1){s+='<text x="'+X(i)+'" y="'+(h-14)+'" fill="#6b7783" font-size="9" text-anchor="middle">KW'+kw(w.datum)+'</text>';}
-});
-s+='<text x="2" y="'+(pT+6)+'" fill="#007ACE" font-size="9">'+Math.round(kmMax)+' km</text>';
-s+='<text x="'+(W-pR+2)+'" y="'+(pT+6)+'" fill="#FF6600" font-size="9">'+hmMax+' HM</text>';
-document.getElementById("ovChart").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
-function raceTimeline(){var n=weeks.length;var W=1160,h=76,pL=40,pR=44,y=42;
+function raceTimeline(){var n=weeks.length;var W=1160,pL=30,pR=30,bandTop=10,bandH=34,axisY=78,h=150;
 var pw=W-pL-pR;function X(i){return pL+(n<=1?0:i/(n-1)*pw);}
-var s='<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="#d9dee3" stroke-width="2"/>';
+var seg=W/n;var s="";
+weeks.forEach(function(w,i){var x0=pL-seg/2+(pw/(n-1||1))*i;});
+var bandW=pw/(n-1||1);
+weeks.forEach(function(w,i){var cx=X(i);var col=PHCOL[w.phase]||"#e6eaef";
+var x=cx-bandW/2;var wgt=bandW;if(i===0){x=pL-bandW/2;}
+s+='<rect x="'+(cx-bandW/2)+'" y="'+bandTop+'" width="'+(bandW+0.6)+'" height="'+bandH+'" fill="'+col+'"/>';});
+var last="";weeks.forEach(function(w,i){if(w.phase!==last){var cx=X(i);
+s+='<text x="'+(cx)+'" y="'+(bandTop+bandH+12)+'" fill="#2b3138" font-size="9" font-weight="700" text-anchor="start">'+esc(w.phase)+'</text>';last=w.phase;}});
+s+='<line x1="'+pL+'" y1="'+axisY+'" x2="'+(W-pR)+'" y2="'+axisY+'" stroke="#d9dee3" stroke-width="2"/>';
 var up=true;
 weeks.forEach(function(w,i){var race=null;w.days.forEach(function(d){if(cls(d.text)==="race")race=d;});
 if(race){var x=X(i);var name=race.text.replace(/^RACE\s*/i,"").replace(/\s*HM\d+/i,"").replace(/DAY\s*/i,"").trim();
 if(w.bemerkung){var bm=w.bemerkung.split(" ")[0];if(bm&&bm.length>2)name=bm;}
-var ly=up?(y-16):(y+24);var ny=up?(y-28):(y+36);
-s+='<line x1="'+x+'" y1="'+y+'" x2="'+x+'" y2="'+(up?y-13:y+13)+'" stroke="#FF6600" stroke-width="2"/>';
-s+='<circle cx="'+x+'" cy="'+y+'" r="5" fill="#FF6600"/>';
+if(isMountainRace(race.text)||isMountainRace(w.bemerkung))name="\uD83C\uDFD4 "+name;
+var ly=up?(axisY-14):(axisY+22);var ny=up?(axisY-26):(axisY+34);
+s+='<line x1="'+x+'" y1="'+axisY+'" x2="'+x+'" y2="'+(up?axisY-12:axisY+12)+'" stroke="#FF6600" stroke-width="2"/>';
+s+='<circle cx="'+x+'" cy="'+axisY+'" r="5" fill="#FF6600"/>';
 s+='<text x="'+x+'" y="'+ly+'" fill="#004B8D" font-size="10" font-weight="700" text-anchor="middle">KW'+kw(w.datum)+'</text>';
-s+='<text x="'+x+'" y="'+ny+'" fill="#2b3138" font-size="9" text-anchor="middle">'+esc(name).slice(0,20)+'</text>';
+s+='<text x="'+x+'" y="'+ny+'" fill="#2b3138" font-size="9" text-anchor="middle">'+esc(name).slice(0,22)+'</text>';
 up=!up;}});
 document.getElementById("ovTimeline").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
+function phaseLegend(){var seen=[],order=[];weeks.forEach(function(w){if(order.indexOf(w.phase)<0)order.push(w.phase);});
+var l=document.getElementById("phaseLegend");l.innerHTML="";
+order.forEach(function(p){l.innerHTML+='<span><i class="dot" style="background:'+(PHCOL[p]||"#e6eaef")+'"></i>'+esc(p)+'</span>';});}
 var ovDrag=null;
 function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="";
 weeks.forEach(function(w,wi){var tr=document.createElement("tr");
@@ -411,7 +402,8 @@ var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+warn+'</td><td>'+esc(w
 w.days.forEach(function(d,di){var t=cls(d.text);var nc=noteColor(d.note);
 var dot=nc?'<span class="notedot" style="background:'+nc+'" title="'+esc(d.note)+'"></span>':"";
 var tick=d.done?'<span class="donetick">&#9989;</span>':"";
-html+='<td class="daycell" draggable="true" data-wi="'+wi+'" data-di="'+di+'"><span class="cell'+(d.done?" done":"")+'" style="background:'+BGL[t]+';border-left:4px solid '+COL[t]+'">'+tick+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
+var txt=esc(d.text);if(cls(d.text)==="race"&&isMountainRace(d.text))txt="\uD83C\uDFD4 "+txt;
+html+='<td class="daycell" draggable="true" data-wi="'+wi+'" data-di="'+di+'"><span class="cell'+(d.done?" done":"")+'" style="background:'+BGL[t]+';border-left:4px solid '+COL[t]+'">'+tick+txt+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
 html+='<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td><td>'+esc(w.bemerkung)+'</td>';
 tr.innerHTML=html;
 tr.querySelector(".wk").onclick=function(){cur=wi;showView("wk");render();};
@@ -441,7 +433,7 @@ ta.addEventListener("keydown",function(ev){if(ev.key==="Enter"&&!ev.shiftKey){ev
 });
 });
 b.appendChild(tr);});
-ovChart();raceTimeline();}
+raceTimeline();phaseLegend();}
 function sel(){var s=document.getElementById("weekSel");s.innerHTML="";
 weeks.forEach(function(w,i){var o=document.createElement("option");o.value=i;o.textContent="KW "+kw(w.datum)+" - "+w.phase;s.appendChild(o);});s.value=cur;}
 document.getElementById("weekSel").addEventListener("change",function(e){cur=+e.target.value;render();});

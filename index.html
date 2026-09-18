@@ -374,7 +374,7 @@ weeks.forEach(function(w,i){var cx=X(i);var col=PHCOL[w.phase]||"#e6eaef";
 var x=cx-bandW/2;var wgt=bandW;if(i===0){x=pL-bandW/2;}
 s+='<rect x="'+(cx-bandW/2)+'" y="'+bandTop+'" width="'+(bandW+0.6)+'" height="'+bandH+'" fill="'+col+'"/>';});
 var last="";weeks.forEach(function(w,i){if(w.phase!==last){var cx=X(i);
-s+='<text x="'+(cx)+'" y="'+(bandTop+bandH+12)+'" fill="#2b3138" font-size="9" font-weight="700" text-anchor="start">'+esc(w.phase)+'</text>';last=w.phase;}});
+s+='<text x="'+(cx)+'" y="'+(bandTop-7)+'" fill="#2b3138" font-size="9" font-weight="700" text-anchor="start">'+esc(w.phase)+'</text>';last=w.phase;}});
 s+='<line x1="'+pL+'" y1="'+axisY+'" x2="'+(W-pR)+'" y2="'+axisY+'" stroke="#d9dee3" stroke-width="2"/>';
 var up=true;
 weeks.forEach(function(w,i){var race=null;w.days.forEach(function(d){if(cls(d.text)==="race")race=d;});

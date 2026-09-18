@@ -1,338 +1,49 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jungfrau-Marathon 2027 Trainingsplan</title><style>
-:root{--blue:#004B8D;--blue2:#007ACE;--orange:#FF6600;--bg:#ffffff;--card:#fff;--line:#e6eaef;--txt:#2b3138;--muted:#6b7783}
-*{box-sizing:border-box}
-body{font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);margin:0}
-header{position:relative;overflow:hidden;background:linear-gradient(160deg,#004B8D,#007ACE);color:#fff;padding:18px 20px 42px}
-header .top{height:4px;background:var(--orange);margin:-18px -20px 14px}
-header .mtn{position:absolute;left:0;right:0;bottom:0;width:100%;height:70px;display:block}
-header .hc{position:relative;z-index:2}
-header h1{font-size:1.35rem;margin:0;font-weight:700}
-header .sub{color:#cfe2f3;font-size:.85rem;margin-top:4px}
-.wrap{padding:18px 20px;max-width:1180px;margin:0 auto}
-#status{padding:8px 12px;border-radius:10px;margin-bottom:14px;font-size:.9rem;background:#e8f7ee;color:#256029;border:1px solid #c5e6d0}
-#status.bad{background:#fdecea;color:#a12b20;border-color:#f2b8b2}
-.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.tab{background:#fff;color:var(--blue);border:1px solid var(--line);border-radius:999px;padding:8px 18px;cursor:pointer;font-size:.9rem;font-weight:600}
-.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-button,select{font-family:inherit}
-.btn{background:var(--blue);color:#fff;border:none;border-radius:999px;padding:8px 16px;cursor:pointer;font-size:.88rem;font-weight:600}
-.btn.orange{background:var(--orange)}
-.btn.ghost{background:#fff;color:var(--blue);border:1px solid var(--line)}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
-select.week{background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:.9rem}
-input.bem{flex:1;min-width:200px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:8px}
-.stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;min-width:96px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.stat b{font-size:1.25rem;display:block;color:var(--blue)}.stat span{color:var(--muted);font-size:.72rem}
-.phase{color:var(--muted);font-size:.9rem;margin:2px 0 10px}
-#chart,#ovChart{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-#chart svg,#ovChart svg{display:block;margin:0 auto;width:100%}
-#ovChart svg{max-width:560px}
-#chart svg{max-width:300px}
-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:.83rem}
-th{background:#f4f7fb;color:var(--blue);font-weight:700}
-.ov .wk{font-weight:700;color:var(--blue);cursor:pointer}
-.ov .wk:hover{text-decoration:underline}
-.ov tr.imb td{background:#fff6f0}
-.ov .warnicon{color:var(--orange);cursor:help;margin-left:3px}
-.ov .daycell{cursor:pointer}
-.ov .daycell.dragover{box-shadow:inset 0 0 0 2px var(--orange)}
-.ov .daycell.dragging{opacity:.4}
-.ov .daycell textarea.celledit{width:130px;min-height:44px;background:#fff;color:var(--txt);border:1px solid var(--blue2);border-radius:8px;padding:5px;font:inherit;font-size:.78rem;resize:vertical}
-.cell{border-radius:10px;padding:5px 8px;display:block;font-size:.78rem;line-height:1.3;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-.cell.done{opacity:.6}
-.donetick{color:#12a594;font-weight:700;margin-right:3px}
-.pc{color:var(--muted);font-size:.72rem;display:block;margin-top:2px}
-.notedot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:4px;cursor:help;vertical-align:middle}
-tr.row{cursor:grab}tr.row:hover td{background:#f6f9fc}
-tr.dragover td{box-shadow:inset 0 3px 0 var(--orange)}
-tr.warn td{background:#fff3ec}
-.wd{font-weight:700;color:var(--blue);white-space:nowrap}
-.handle{white-space:nowrap}
-.grip{cursor:grab;color:var(--muted);font-size:1.1rem;user-select:none}
-.mv{display:inline-flex;flex-direction:column;gap:2px;vertical-align:middle;margin-left:3px}
-.mv button{background:#eef2f6;border:1px solid var(--line);border-radius:6px;color:var(--blue);font-size:.6rem;line-height:1;padding:3px 5px;cursor:pointer}
-.mv button:active{background:var(--blue);color:#fff}
-textarea{width:100%;min-width:200px;min-height:42px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px;font:inherit;font-size:.82rem}
-input.km{width:58px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px}
-input.note{width:150px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px;font-size:.8rem}
-.pace{color:var(--muted);font-size:.8rem;white-space:nowrap}
-.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.72rem;color:#fff;font-weight:700}
-.done td{opacity:.5}.done textarea{text-decoration:line-through}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0;font-size:.72rem;color:var(--muted)}
-.legend span{display:inline-flex;align-items:center;gap:5px}.dot{width:11px;height:11px;border-radius:4px}
-.balance{margin:10px 0;padding:10px 14px;border-radius:10px;font-size:.9rem}
-.balance.ok{background:#e8f7f2;border:1px solid #9fdcc9;color:#0d6b5f}
-.balance.bad{background:#fff3ec;border:1px solid var(--orange);color:#a5480a}
-.lg h2{color:var(--blue);margin:6px 0 10px}.lg h3{color:var(--blue2);margin:18px 0 6px}
-.lg ul{font-size:.85rem;line-height:1.5;color:var(--txt)}
-.lg input.pcedit{width:160px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:5px;font:inherit;font-size:.82rem}
-.lg input.pcedit:focus{border-color:var(--blue2);outline:none}
-.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.hint{color:#6b7783;font-size:.8rem}
-.hide{display:none}
-@media(max-width:820px){
-.wrap{padding:14px 12px}
-header{padding:16px 14px 38px}header .top{margin:-16px -14px 12px}
-header h1{font-size:1.12rem}header .sub{font-size:.76rem}
-header .mtn{height:54px}
-.tab{flex:1;text-align:center;padding:8px 8px;font-size:.82rem}
-.stat{flex:1;min-width:calc(33% - 8px);padding:8px 10px}.stat b{font-size:1.1rem}
-th,td{padding:6px 7px;font-size:.8rem}
-.ov .cell{font-size:.72rem}
-}
-@media(max-width:560px){
-.stat{min-width:calc(50% - 8px)}
-select.week{width:100%}
-.btn{flex:1;font-size:.82rem;padding:9px 8px}
-textarea{min-width:120px;font-size:.8rem}
-.grip{display:none}
-.mv button{padding:5px 8px;font-size:.7rem}
-input.note{width:110px}
-.lg input.pcedit{width:120px}
-}
-</style></head><body>
-<header><div class="top"></div>
-<svg class="mtn" viewBox="0 0 1200 70" preserveAspectRatio="none">
-<polygon points="0,70 200,30 380,58 560,18 760,60 980,26 1200,50 1200,70" fill="#ffffff" opacity="0.12"/>
-<polygon points="0,70 150,44 300,66 470,30 560,50 700,14 840,58 1000,36 1160,64 1200,52 1200,70" fill="#0a5ea3"/>
-<polygon points="686,30 700,14 714,30 707,28 700,22 693,28" fill="#ffffff" opacity="0.95"/>
-<polygon points="458,42 470,30 482,42 476,40 470,35 464,40" fill="#ffffff" opacity="0.9"/>
-<polygon points="968,48 980,36 992,48 986,46 980,41 974,46" fill="#ffffff" opacity="0.85"/>
-</svg>
-<div class="hc"><h1>&#127956; Jungfrau-Marathon 2027 &ndash; Trainingsplan</h1>
-<div class="sub">Ziel 3:40 h &middot; Gesamtansicht und Wochenplanung mit Drag &amp; Drop editierbar</div></div></header>
-<div class="wrap">
-<div id="status">Lade...</div>
-<div class="tabs">
-<button class="tab active" id="tabOv">Gesamtplan</button>
-<button class="tab" id="tabWk">Woche im Detail</button>
-<button class="tab" id="tabLg">Legende</button>
-</div>
-<div class="bar">
-<button class="btn ghost" id="expBtn">&#8681; Plan exportieren</button>
-<button class="btn ghost" id="impBtn">&#8679; Plan importieren</button>
-<input type="file" id="impFile" accept=".json,application/json" style="display:none">
-</div>
-
-<div id="ovView">
-<h3 style="color:#004B8D;margin:4px 0 8px">Saisonverlauf: Wochen-km &amp; Höhenmeter</h3>
-<div id="ovChart"></div>
-<div class="legend"><span><i class="dot" style="background:#007ACE"></i>Wochen-km</span><span><i class="dot" style="background:#FF6600"></i>Höhenmeter</span><span>&#9989; = erledigt</span><span><i class="dot" style="background:#ef4444;border-radius:50%"></i>Notiz: Warnung</span><span><i class="dot" style="background:#eab308;border-radius:50%"></i>Notiz: Ermüdung</span><span><i class="dot" style="background:#14b8a6;border-radius:50%"></i>Notiz: positiv</span><span><i class="dot" style="background:#FF6600;border-radius:50%"></i>Notiz: neutral</span><span>&#9888; = zwei harte Tage in Folge</span></div>
-<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail. &#9989; = erledigt, &#9888; = zwei harte Tage in Folge.</span></div>
-<div class="scroll"><table class="ov"><thead><tr>
-<th>KW</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
-</tr></thead><tbody id="ovBody"></tbody></table></div>
-</div>
-
-<div id="wkView" class="hide">
-<div class="bar">
-<select class="week" id="weekSel"></select>
-<button class="btn orange" id="suggest">Woche ausbalancieren</button>
-<button class="btn ghost" id="reset">Woche zurücksetzen</button>
-<button class="btn ghost" id="resetAll">Alles zurücksetzen</button>
-</div>
-<div class="bar"><label style="font-size:.85rem;color:#6b7783;flex:1;display:flex;align-items:center;gap:6px">Bemerkung Woche:<input class="bem" id="bem" placeholder="Notiz zur Woche..."></label></div>
-<div class="phase" id="phase"></div>
-<div class="stats">
-<div class="stat"><b id="kmDone">0</b><span>km erledigt</span></div>
-<div class="stat"><b id="kmPlan">0</b><span>km geplant</span></div>
-<div class="stat"><b id="prog">0%</b><span>Fortschritt</span></div>
-<div class="stat"><b id="kmBlock">0</b><span>km Block</span></div>
-<div class="stat"><b id="hmW">0</b><span>HM Woche</span></div>
-<div class="stat"><b id="load">0</b><span>Last</span></div></div>
-<div id="chart"></div>
-<div class="balance" id="balance"></div>
-<div class="legend" id="legend"></div>
-<div class="scroll"><table><thead><tr><th>Sort</th><th>OK</th><th>Tag</th><th>Einheit</th><th>km</th><th>Pace</th><th>Typ</th><th>Last</th><th>Notiz</th></tr></thead><tbody id="body"></tbody></table></div>
-<p class="hint">Tipp: Am Desktop Zeile am Griff &#9776; ziehen. Auf allen Geräten mit &#9650;/&#9660; verschieben. Typ und Pace werden automatisch aus dem Text erkannt. Bei Schwelle/Intervall zählen die Wiederholungs-km + 6 km Ein-/Auslaufen.</p>
-</div>
-
-<div id="lgView" class="hide">
-<div class="lg">
-<h2>Legende &amp; Pace-Vorgaben</h2>
-<p class="hint">Bei Formverbesserung: Pace-Felder direkt anpassen &ndash; die Werte wirken sofort im ganzen Plan.</p>
-<div class="scroll"><table><thead><tr><th>Kürzel</th><th>Bedeutung</th><th>Pace / Intensität (editierbar)</th></tr></thead><tbody>
-<tr><td><b>ESR</b></td><td>Easy Steady Run &ndash; lockerer Dauerlauf</td><td><input class="pcedit" data-pk="esr"></td></tr>
-<tr><td><b>LSR</b></td><td>Long Steady Run &ndash; langer Dauerlauf, Grundlage</td><td><input class="pcedit" data-pk="lsr"></td></tr>
-<tr><td><b>IVT</b></td><td>Intervall Training &ndash; kurze, schnelle Intervalle</td><td><input class="pcedit" data-pk="ivt"></td></tr>
-<tr><td><b>ST DL2</b></td><td>Speed/Schwellentraining (Tempo-km-Wdh.)</td><td><input class="pcedit" data-pk="dl2"></td></tr>
-<tr><td><b>ST DL2 Berg</b></td><td>Schwellen-Einheit im Anstieg (kraftbetont)</td><td><input class="pcedit" data-pk="dl2berg"></td></tr>
-<tr><td><b>Tempo (DL1)</b></td><td>Tempolauf Renntempo bis leicht schneller</td><td><input class="pcedit" data-pk="tempo"></td></tr>
-<tr><td><b>Fartlek/Hills</b></td><td>Tempowechsel- bzw. Hügeltraining</td><td><input class="pcedit" data-pk="fartlek"></td></tr>
-<tr><td><b>Kraft/Stabi</b></td><td>Kraft- und Stabitraining</td><td><input class="pcedit" data-pk="kraft"></td></tr>
-<tr><td><b>Ausschütteln</b></td><td>Ganz lockerer Trabtag vor/nach Wettkampf</td><td><input class="pcedit" data-pk="aus"></td></tr>
-<tr><td><b>n.RPE</b></td><td>Nach Anstrengungsempfinden (Rate of Perceived Exertion) &ndash; Tempo nach Gefühl statt fester Pace, v.a. an langen Berganstiegen</td><td>gleichmässig hart, aber kontrolliert (ca. RPE 6-7)</td></tr>
-<tr><td><b>Off</b></td><td>Ruhetag / aktive Erholung</td><td>-</td></tr>
-<tr><td><b>HM</b></td><td>Höhenmeter im jeweiligen Lauf</td><td>-</td></tr>
-</tbody></table></div>
-<p style="color:#6b7783;font-size:.8rem" id="paceDate"></p>
-<p><button class="btn ghost" id="paceReset">Pace-Vorgaben zurücksetzen</button></p>
-<h3>Datensicherung</h3>
-<ul>
-<li><b>Plan exportieren:</b> Speichert deinen aktuellen Stand als JSON-Datei (Backup).</li>
-<li><b>Plan importieren:</b> Lädt eine solche Datei wieder ein &ndash; auf jedem Gerät, auch nach Code-Änderungen.</li>
-<li>Deine Online-Edits bleiben im Browser gespeichert (Schlüssel bleibt stabil).</li>
-</ul>
-<h3>Trainingsumfänge</h3>
-<ul>
-<li>Alle ESR mindestens 10 km, alle LSR mindestens 20 km.</li>
-<li>Bern-Thun-Longrun gedeckelt auf 30 km, Peak-Longrun gedeckelt auf 40 km.</li>
-<li>Wochen nach dem Marathon (bis KW52/2027) bewusst offen &ndash; per Klick befüllbar.</li>
-</ul>
-<h3>Notiz-Punkte im Gesamtplan</h3>
-<ul>
-<li><b style="color:#ef4444">Rot:</b> Warnsignal &ndash; schmerz, krank, verletz, weh, problem, abbruch</li>
-<li><b style="color:#eab308">Gelb:</b> Ermüdung beachten &ndash; müde, schlaf, erschöpft, schwer, steif, schlapp</li>
-<li><b style="color:#14b8a6">Grün:</b> positiv &ndash; gut, top, stark, super, bestzeit, easy</li>
-<li><b style="color:#FF6600">Orange:</b> neutrale Notiz (alle übrigen)</li>
-</ul>
-<h3>Höhenmeter-Ausführung</h3>
-<ul>
-<li><b>am Stück:</b> Höhenmeter in einem zusammenhängenden Anstieg (Jungfrau-Spezifik, ab km 25-30 langer Berg).</li>
-<li><b>coupiert:</b> Höhenmeter über welliges Profil verteilt (ständiges Auf und Ab). Trainiert Rhythmuswechsel.</li>
-<li><b>flach:</b> Kaum Höhenmeter (Bahn/Ebene) &ndash; für Tempo-/Intervallqualität ohne Ermüdung.</li>
-</ul>
-<h3>km-Berechnung Schwelle &amp; Intervall</h3>
-<ul>
-<li>Netto-Distanz aus den Wiederholungen (z.B. DL2 3x2k = 6 km, IVT 6x600m = 3,6 km)</li>
-<li><b>+ 6 km</b> für Ein- und Auslaufen werden automatisch dazugerechnet.</li>
-</ul>
-<h3>Trainingsprinzipien</h3>
-<ul>
-<li>Periodisierung: Grundlage &rarr; Aufbau &rarr; Berg-Aufbau &rarr; Marathon-spezifisch &rarr; Taper</li>
-<li>Samstag als 2. Qualitätstag mit ST DL2 &ndash; in Bergphasen als Anstiegs-DL2</li>
-<li>Long Run wächst progressiv; HM ab Berg-Aufbau bewusst 'am Stück'</li>
-<li>Polarisierung 80/20: Easy echt langsam, damit Schlüsseleinheiten hart laufbar sind</li>
-<li>3:1-Deload-Rhythmus zur Superkompensation (W10, W38)</li>
-<li>Power-Hiking an Rampen &gt;15%; Fueling 60-90g KH/h in langen Berg-Longruns</li>
-</ul>
-</div>
-</div>
-
-</div>
-<script>
-var S=document.getElementById("status");
-try{
-var COL={easy:"#3b82f6",long:"#ef4444",interval:"#a855f7",threshold:"#f59e0b",tempo:"#ec4899",fartlek:"#14b8a6",strength:"#64748b",rest:"#9aa5b1",race:"#FF6600"};
-var BGL={easy:"#e8f0fe",long:"#fde5e5",interval:"#efe6fb",threshold:"#fdf0d9",tempo:"#fce4ef",fartlek:"#dff5ef",strength:"#eef1f5",rest:"#f2f4f7",race:"#ffe9d6"};
-var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo (DL1)",fartlek:"Fartlek",strength:"Kraft/Stabi",rest:"Ruhe",race:"Wettkampf"};
-var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
-var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v14",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
-var PACE_DEF={esr:"4:45-5:15/km",lsr:"4:15-4:35/km",lsrlocker:"4:45-5:05/km",rennsim:"3:55-4:10/km flach, dann n.RPE",ivt:"3:10-3:30/km",dl2:"3:30-3:40/km",dl2berg:"3:40-4:10/km +HM",dl2locker:"3:35-3:45/km",tempo:"3:40-4:00/km",fartlek:"4:00-4:20/km wechselnd",kraft:"RPE 6-8",aus:"5:00-5:30/km"};
-var PACE={};
-function loadPace(){try{var s=localStorage.getItem(PKEY);var o=s?JSON.parse(s):{};for(var k in PACE_DEF){PACE[k]=(o&&o[k])?o[k]:PACE_DEF[k];}}catch(e){for(var k2 in PACE_DEF)PACE[k2]=PACE_DEF[k2];}}
-function savePace(){try{localStorage.setItem(PKEY,JSON.stringify(PACE));}catch(e){}}
-function stampPace(){try{var d=new Date();var s=("0"+d.getDate()).slice(-2)+"."+("0"+(d.getMonth()+1)).slice(-2)+"."+d.getFullYear();localStorage.setItem(PDKEY,s);showPaceDate();}catch(e){}}
-function showPaceDate(){var el=document.getElementById("paceDate");if(!el)return;var s="";try{s=localStorage.getItem(PDKEY)||"";}catch(e){}el.textContent=s?("Pace zuletzt angepasst am "+s):"Pace-Vorgaben noch nicht angepasst (Standardwerte).";}
-function cls(t){t=(t||"").toUpperCase();if(!t.replace(/\s/g,""))return"rest";
-if(t.indexOf("RENN-SIM")>-1)return"long";if(t.indexOf("RACE")>-1)return"race";
-if(t.indexOf("OFF")===0||t.indexOf("AUSROLLEN")===0)return"rest";
-if(t.indexOf("KRAFT")>-1||t.indexOf("STABI")>-1)return"strength";
-if(t.indexOf("IVT")>-1)return"interval";if(t.indexOf("TEMPO")>-1)return"tempo";
-if(t.indexOf("FARTLEK")>-1)return"fartlek";if(t.indexOf("DL2")>-1)return"threshold";
-if(t.indexOf("LSR")>-1)return"long";return"easy";}
-function noteColor(n){var t=(n||"").toLowerCase();if(t.replace(/\s/g,"")==="")return"";
-var red=["schmerz","krank","verletz","weh","problem","abbruch"];
-var yellow=["müde","muede","schlaf","erschöpft","erschoepft","schwer","steif","schlapp"];
-var green=["gut","top","stark","super","bestzeit","easy"];
-for(var i=0;i<red.length;i++){if(t.indexOf(red[i])>-1)return"#ef4444";}
-for(var y=0;y<yellow.length;y++){if(t.indexOf(yellow[y])>-1)return"#eab308";}
-for(var j=0;j<green.length;j++){if(t.indexOf(green[j])>-1)return"#14b8a6";}
-return"#FF6600";}
-function imbalanced(w){var hard=w.days.map(function(d){return INT[cls(d.text)]>=3;});
-for(var i=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1])return true;}return false;}
-function pace(t){var c=cls(t),T=(t||"").toUpperCase();
-if(c==="rest")return"-";
-if(c==="strength")return PACE.kraft;
-if(c==="race")return"Wettkampftempo";
-if(c==="interval")return PACE.ivt;
-if(c==="threshold"){if(T.indexOf("BERG")>-1)return PACE.dl2berg;if(T.indexOf("LOCKER")>-1)return PACE.dl2locker;return PACE.dl2;}
-if(c==="tempo")return PACE.tempo;
-if(c==="fartlek")return PACE.fartlek;
-if(c==="long"){if(T.indexOf("RENN-SIM")>-1)return PACE.rennsim;if(T.indexOf("LOCKER")>-1)return PACE.lsrlocker;if(T.indexOf("N.RPE")>-1||T.indexOf("HM8")>-1||T.indexOf("HM1")>-1)return"n.RPE (HM-Rate)";return PACE.lsr;}
-if(T.indexOf("AUSSCHÜTTELN")>-1)return PACE.aus;
-return PACE.esr;}
-function repKm(t){var total=0,found=false,re=/(\d+)\s*x\s*(\d+(?:[.,]\d+)?)\s*(km|k|m)/gi,m;
-while((m=re.exec(t))!==null){var reps=parseInt(m[1],10);var val=parseFloat(m[2].replace(",","."));
-var u=m[3].toLowerCase();var d=(u==="m")?val/1000:val;total+=reps*d;found=true;}
-return found?total:0;}
-function km(t){var c=cls(t);if(c==="threshold"||c==="interval"){var r=repKm(t);if(r>0)return Math.round((r+6)*10)/10;}
-var m=(t||"").match(/(\d+[.,]?\d*)\s*km/i);return m?parseFloat(m[1].replace(",",".")):0;}
-function hm(t){var m=(t||"").match(/HM\s*(\d{2,4})/i);return m?parseInt(m[1],10):0;}
-function parseD(s){var p=(s||"").split(".");if(p.length<3)return null;return new Date(2000+parseInt(p[2],10),parseInt(p[1],10)-1,parseInt(p[0],10));}
-function kw(s){var d=parseD(s);if(!d)return"?";var t=new Date(d.getFullYear(),d.getMonth(),d.getDate());
-var dy=(t.getDay()+6)%7;t.setDate(t.getDate()-dy+3);var f=new Date(t.getFullYear(),0,4);
-var fy=(f.getDay()+6)%7;f.setDate(f.getDate()-fy+3);return 1+Math.round((t-f)/604800000);}
+"35|Marathon-spez.|12M\s*(\d{2,4})/i);return m?parseInt(m[1],10):0;}
+function parseD(s){var p.07.27|Regeneration|Kraft/Stabi~ESR 13km~ESR 14km~ESR 12km~Off~DL2 3x2k~LSR 24km=(s||"").split(".");if(p.length<3)return null;return new Date(2000+ HM400\n"+
+"36|Marathon-spez.|19.07.27|Race-Sim Flach-Berg Fueling|KparseInt(p[2],10),parseInt(p[1],10)-1,parseInt(p[0],10));}
+function kw(s){var d=parseD(s);if(!d)return"?raft/Stabi~ESR 15km~DL2 2x2k+2x3k~Fartlek 14km~Off~DL2 3x3k Berg HM";var t=new Date(d.getFullYear(),d.getMonth(),d.getDate());var dy=(t.getDay()+6)%7;t.setDate(t.getDate500~LSR Renn-Sim 38km HM1000\n"+
+"37|Marathon-spez.|26.07.27|Race-Sim 2|Kraft/Stab()-dy+3);var f=new Date(t.getFullYear(),0,4i~ESR 15km~DL2 3x2k+1x3k~IVT 6x1000m~Off~DL2 3x3k Berg HM550~LSR Renn-Sim 40);var fy=(f.getDay()+6)%7;f.setDate(f.getDate()-fy+3);return 1+Math.roundkm HM1200\n"+
+"38|Marathon-spez.|02.08.27|DELOAD vor Peak|Kraft/Stabi~ESR 16km~DL((t-f)/604800000);}
 var DATA=
-"1|Grundlage 1|16.11.26||Kraft/Stabi~ESR 11km~ESR 13km~ESR 12km~Off~DL2 2x2k~LSR 20km HM150\n"+
-"2|Grundlage 1|23.11.26||Kraft/Stabi~ESR 12km~ESR 14km~ESR 13km~Off~DL2 3x2k~LSR 22km HM200\n"+
-"3|Grundlage 1|30.11.26||Kraft/Stabi~ESR 13km~Fartlek 10km~ESR 14km~Off~DL2 2x2k+1x1k~LSR 24km HM250\n"+
-"4|Grundlage 1|07.12.26||Kraft/Stabi~ESR 13km~ESR 15km~ESR 16km~Off~DL2 3x2k~LSR 26km HM300\n"+
-"5|Grundlage 1|14.12.26||Kraft/Stabi~ESR 14km~Fartlek 12km~ESR 15km~Off~DL2 2x3k~LSR 28km HM350\n"+
-"6|Grundlage 1|21.12.26|Weihnachtswoche Vereinslauf|Kraft/Stabi~ESR 11km~ESR 15km~ESR 13km~Off~DL2 2x2k~LSR 30km Bern-Thun HM100\n"+
-"7|Grundlage 2|28.12.26||Kraft/Stabi~ESR 13km~IVT 6x600m~ESR 16km~Off~DL2 3x2k~LSR 30km HM300\n"+
-"8|Grundlage 2|04.01.27||Kraft/Stabi~ESR 14km~IVT 8x600m~ESR 16km~Off~DL2 2x2k+1x3k~LSR 32km HM350\n"+
-"9|Grundlage 2|11.01.27||Kraft/Stabi~ESR 14km~DL2 3x1km~ESR 17km~Off~DL2 2x3k~LSR 32km HM600\n"+
-"10|Grundlage 2|18.01.27|DELOAD 3:1|Kraft/Stabi~ESR 15km~IVT 8x800m~ESR 17km~Off~DL2 2x2k locker~LSR 26km HM250\n"+
-"11|Grundlage 2|25.01.27||Kraft/Stabi~ESR 15km~DL2 2x1k+2x2k~ESR 18km~Off~DL2 2x3k Berg HM250~LSR 34km HM800\n"+
-"12|Grundlage 2|01.02.27|Feldtest Schwelle|Kraft/Stabi~ESR 16km~IVT 10x800m~ESR 18km~Off~DL2 3x2k Berg HM300~LSR 36km HM1000\n"+
-"13|Aufbau 1|08.02.27||Kraft/Stabi~ESR 13km~DL2 3x2k~Fartlek 14km~Off~DL2 2x3k Berg HM350~LSR 34km HM1000\n"+
-"14|Aufbau 1|15.02.27||Kraft/Stabi~ESR 13km~DL2 2x2k+1x3k~IVT 6x1000m~Off~DL2 2x2k Berg HM300~LSR 32km HM400\n"+
-"15|Aufbau 1|22.02.27||Kraft/Stabi~ESR 13km~DL2 4x2k~Fartlek 12km~Off~DL2 2x3k Berg HM350~LSR 28km HM350\n"+
-"16|Aufbau 1|01.03.27|Formaufbau|Kraft/Stabi~ESR 12km~Tempo 8km~IVT 8x1000m~Off~DL2 3x1k~LSR 24km HM250\n"+
-"17|Aufbau 1|08.03.27|Taper|Off~ESR 10km~Tempo 6km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"18|Aufbau 1|15.03.27|Kerzerslauf 20.03.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE Kerzerslauf 15km~Ausschütteln 4km\n"+
-"19|Regeneration|22.03.27|Regeneration|Kraft/Stabi~ESR 11km~ESR 12km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
-"20|Aufbau 2|29.03.27||Kraft/Stabi~ESR 13km~IVT 6x400m~ESR 13km~Off~DL2 3x2k~LSR 24km HM250\n"+
-"21|Aufbau 2|05.04.27||Kraft/Stabi~ESR 14km~IVT 8x400m~ESR 13km~Off~DL2 2x2k+1x3k~LSR 26km HM300\n"+
-"22|Aufbau 2|12.04.27||Kraft/Stabi~ESR 14km~Tempo 6km~ESR 14km~Off~DL2 3x2k~LSR 28km HM350\n"+
-"23|Aufbau 2|19.04.27||Kraft/Stabi~ESR 15km~IVT 10x400m~ESR 14km~Off~DL2 2x3k~LSR 30km HM400\n"+
-"24|Aufbau 2|26.04.27|Richtung GP Bern|Kraft/Stabi~ESR 13km~Tempo 8km~ESR 12km~Off~DL2 3x2k~LSR 24km HM250\n"+
-"25|Aufbau 2|03.05.27|Taper|Off~ESR 10km~Tempo 5km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"26|Aufbau 2|10.05.27|GP Bern 15.05.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE GP Bern 16km~Ausschütteln 4km\n"+
-"27|Berg-Aufbau|17.05.27|Bergaufbau|Kraft/Stabi~ESR 13km~Fartlek 12km~ESR 13km~Off~DL2 2x3k Berg HM350~LSR 26km HM800\n"+
-"28|Berg-Aufbau|24.05.27||Kraft/Stabi~ESR 13km~DL2 3x2k~ESR 14km~Off~DL2 2x3k Berg HM400~LSR 30km HM1000\n"+
-"29|Berg-Aufbau|31.05.27|Feldtest Berg|Kraft/Stabi~ESR 14km~Fartlek 14km~ESR 15km~Off~DL2 3x2k Berg HM450~LSR 34km HM1200\n"+
-"30|Berg-Aufbau|07.06.27|LGT Alpin 12.06.|Off~Ausschütteln 6km~ESR 13km~Off~Off~RACE LGT Alpin Staffel~Ausschütteln 5km\n"+
-"31|Regeneration|14.06.27|Regeneration|Kraft/Stabi~ESR 11km~ESR 12km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
-"32|Aufbau 2|21.06.27||Kraft/Stabi~ESR 13km~IVT 6x600m~ESR 13km~Off~DL2 2x3k Berg HM300~LSR 26km HM400\n"+
-"33|Aufbau 2|28.06.27|Taper Zermatt|Off~ESR 10km~Tempo 6km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
-"34|Aufbau 2|05.07.27|Zermatt 03.07.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE Zermatt 21km HM900~Ausschütteln 4km\n"+
-"35|Marathon-spez.|12.07.27|Regeneration|Kraft/Stabi~ESR 13km~ESR 14km~ESR 12km~Off~DL2 3x2k~LSR 24km HM400\n"+
-"36|Marathon-spez.|19.07.27|Race-Sim Flach-Berg Fueling|Kraft/Stabi~ESR 15km~DL2 2x2k+2x3k~Fartlek 14km~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 38km HM1000\n"+
-"37|Marathon-spez.|26.07.27|Race-Sim 2|Kraft/Stabi~ESR 15km~DL2 3x2k+1x3k~IVT 6x1000m~Off~DL2 3x3k Berg HM550~LSR Renn-Sim 40km HM1200\n"+
-"38|Marathon-spez.|02.08.27|DELOAD vor Peak|Kraft/Stabi~ESR 16km~DL2 3x2k~ESR 13km~Off~DL2 2x2k Berg HM300~LSR 30km HM500\n"+
-"39|Marathon-spez.|09.08.27|PEAK grösste Race-Sim|Kraft/Stabi~ESR 15km~DL2 3x2k+2x3k~IVT 8x1000m~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 40km HM1500\n"+
-"40|Marathon-spez.|16.08.27|Generalprobe|Kraft/Stabi~ESR 14km~DL2 4x2k~Fartlek 14km~Off~DL2 2x3k Berg HM400~LSR 34km HM1000\n"+
-"41|Taper|23.08.27|Taper -40%|Kraft/Stabi~ESR 12km~DL2 2x2k~Fartlek 8km~Off~DL2 2x2k Berg HM200~LSR 22km HM500\n"+
-"42|Taper|30.08.27||Off~ESR 10km~ESR 11km~Fartlek 6km~Off~ESR 13km +Renntempo~Off\n"+
-"43|Race|06.09.27|JUNGFRAU-MARATHON 11.09.|Off~ESR 10km~ESR 10km~Off~Off~RACE DAY 42.2km HM1829~Ausrollen\n"+
+"1|2 3x2k~ESR 13km~Off~DL2 2x2k Berg HM300~LSR 30km HM500\n"+
+"39|Marathon-spez.Grundlage 1|16.11.26||Kraft|09.08.27|PEAK grösste Race-Sim|Kraft/Stabi~ESR 15km~DL2 3x2k+2/Stabi~ESR 11km~ESR 13km~ESR 12km~Offx3k~IVT 8x1000m~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 40km HM1500\n"+
+"40~DL2 2x2k~LSR 20|Marathon-spez.|16.08.27|Generalprobe|Kraft/Stabi~ESR 14km~DL2 4x2k~Fartlek 14km~Offkm HM150\n"+
+"2|Grundlage 1|23.11.26||Kraft/~DL2 2x3k Berg HM400~LSR 34km HM1000\n"+
+"41|Taper|23.08.27|Stabi~ESR 12km~ESR 14km~ESR 13km~Off~DL2 3x2k~LSR 22km HM200\n"+
+"3|Grundlage 1|30.11.26||Taper -40%|Kraft/Stabi~ESR 12km~DL2 2x2k~Fartlek 8km~Off~DL2 2x2k Berg HM200Kraft/Stabi~ESR 13km~Fartlek 10km~ES~LSR 22km HM500\n"+
+"42|Taper|30.08.27||Off~ESR 10km~ESR 11km~Fartlek 6km~Off~ESRR 14km~Off~DL2 2x2k+1x1k~LSR 24km HM250\n"+
+"4| 13km +Renntempo~Off\n"+
+"43|Race|06.09.27|JUNGFRAU-MARATHON Grundlage 1|07.12.26||Kraft/Stabi~ESR 13km~ESR 15km~ESR 16km~Off~DL2 3x2k~LSR 2611.09.|Off~ESR 10km~ESR 10km~Off~Off~RACE DAY 42.2km HM1829~Ausrollen\n"+km HM300\n"+
+"5|Grundlage 1|14.12.26||Kraft/Stabi~ESR 14km~Fartlek 12km~ESR 15km~Off~DL2 2x
 "44|Erholung|13.09.27|Nach dem Marathon - offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"45|Erholung|20.09.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"46|Offen|27.09.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"45|3k~LSR 28km HM350\n"+
+"6|Grundlage 1|21.12.26|Weihnachtswoche VereinslErholung|20.09.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"46|Offen|27.09.27|offen|Off~auf|Kraft/Stabi~ESR 11km~ESR 15km~ESR 13Off~Off~Off~Off~Off~Off\n"+
 "47|Offen|04.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"48|Offen|11.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"49|Offen|18.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"48km~Off~DL2 2x2k~LSR 30km Bern-Thun HM100\n"+
+"7||Offen|11.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"49|Offen|18.10.27|offen|Off~Off~Off~Grundlage 2|28.12.26||Kraft/Stabi~ESR 13km~IVT 6x600Off~Off~Off~Off\n"+
 "50|Offen|25.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"51|Offen|01.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"52|Offen|08.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"51|Offen|m~ESR 16km~Off~DL2 3x2k~LSR 30km HM300\n"+
+"8|Grundlage 2|0401.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"52|Offen|08.11.27|offen|Off~Off~Off~Off~Off.01.27||Kraft/Stabi~ESR 14km~IVT 8x600m~ESR 16km~Off~DL2 2~Off~Off\n"+
 "53|Offen|15.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"54|Offen|22.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"55|Offen|29.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"54|Offen|22.11.27x2k+1x3k~LSR 32km HM350\n"+
+"9|Grundlage 2|11.01.27||Kraft/Stabi~ESR 14km~DL2 3x1|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"55|Offen|29.11.27|offen|Off~Off~Off~Off~Off~Off~km~ESR 17km~Off~DL2 2x3Off\n"+
 "56|Offen|06.12.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"57|Offen|13.12.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
-"58|Offen|20.12.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"57|Offen|13.12.27|offen|k~LSR 32km HM600\n"+
+"10|Grundlage 2|18.01.27|DELOAD 3:1|Kraft/Stabi~ESOff~Off~Off~Off~Off~Off~Off\n"+
+"58|Offen|20.12.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+R 15km~IVT 8x800m~ESR 17km~Off~DL2 2x2k locker~LSR 26
 "59|Offen|27.12.27|offen KW52|Off~Off~Off~Off~Off~Off~Off";
-function build(){return DATA.split("\n").map(function(line){
+function build(){return DATA.split("\nkm HM250\n"+
+"11|Grundlage 2|25.01.27||Kraft/Stabi~ESR 15km~DL2 2x1k").map(function(line){
 var p=line.split("|");var days=p[4].split("~").map(function(t,i){
-return{day:WD[i],text:t,km:km(t),hm:hm(t),done:false,note:""};});
-return{woche:+p[0],phase:p[1],datum:p[2],bemerkung:p[3],days:days};});}
+return{day:W+2x2k~ESR 18km~Off~DL2 2x3k Berg HM250~D[i],text:t,km:km(t),hm:hm(t),done:false,note:""};});
+return{woche:+p[0],phLSR 34km HM800\n"+
+"12|Grundlage 2|01.02.27|Feldtestase:p[1],datum:p[2],bemerkung:p[3],days:days};});}
 var weeks=[],cur=0;
-function load(){try{var s=localStorage.getItem(KEY);weeks=s?JSON.parse(s):build();}catch(e){weeks=build();}
+function load Schwelle|Kraft/Stabi(){try{var s=localStorage.getItem(KEY);weeks=s?JSON.parse(s):build();}catch(e){weeks=build();}
 if(!Array.isArray(weeks)||!weeks.length)weeks=build();}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(weeks));}catch(e){}}
 function esc(s){return(s||"").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
@@ -341,169 +52,246 @@ document.getElementById("wkView").className=v==="wk"?"":"hide";
 document.getElementById("lgView").className=v==="lg"?"":"hide";
 document.getElementById("tabOv").className="tab"+(v==="ov"?" active":"");
 document.getElementById("tabWk").className="tab"+(v==="wk"?" active":"");
-document.getElementById("tabLg").className="tab"+(v==="lg"?" active":"");}
+document.getElementById("tabLg").className="tab"+(v==="lg"?" active":"~ESR 16km~IVT 10x800m~ESR 18km~Off~DL2 3x2k Berg HM300~LSR 36km HM1000\n"+
+"13|Aufbau 1|08.02.27||Kraft/Stabi~ESR 13km~DL2 3x2k~Fartlek 14km~Off~DL2 2x3k Berg HM350~LSR 34km HM1000\n"+
+"14|Aufbau 1|15.02.27||Kraft/Stabi~ESR 13km~DL2 2x2k+1x3k~IVT 6x1000m~Off~DL2 2x2k Berg HM300~LSR 32km HM400\n"+
+"15|Aufbau 1|22.02.27||Kraft/Stabi~ESR 13km~DL2 4x2k~Fartlek 12km~Off~DL2 2x3k Berg HM350~LSR 28km HM350\n"+
+"16|Aufbau 1|01.03.27|Formaufbau|Kraft/Stabi~ESR 12");}
 document.getElementById("tabOv").onclick=function(){showView("ov");renderOv();};
-document.getElementById("tabWk").onclick=function(){showView("wk");render();};
+document.getElementById("tabWk").onclick=function(){showView("wk");renderkm~Tempo 8km~IVT 8x1000m~Off~DL2 3x1();};
 document.getElementById("tabLg").onclick=function(){showView("lg");};
-function initPaceInputs(){var ins=document.querySelectorAll(".pcedit");
+function initPaceInputs(){var ins=document.querySelectorAll(".pck~LSR 24km HM250\n"+
+"17|Aufbau 1|08.03.27|Taper|Off~ESedit");
 ins.forEach(function(inp){var k=inp.getAttribute("data-pk");inp.value=PACE[k]||"";
-inp.onchange=function(){PACE[k]=inp.value;savePace();stampPace();
+inp.onchange=R 10km~Tempo 6km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
+"18|function(){PACE[k]=inp.value;savePace();stampPace();
 renderOv();if(document.getElementById("wkView").className!=="hide")render();};});}
-document.getElementById("paceReset").onclick=function(){if(confirm("Pace-Vorgaben auf Standard zurücksetzen?")){for(var k in PACE_DEF)PACE[k]=PACE_DEF[k];savePace();initPaceInputs();renderOv();if(document.getElementById("wkView").className!=="hide")render();}};
+documentAufbau 1|15.03.27|Kerzerslauf 20.03.|Off.getElementById("paceReset").onclick=function(){if(confirm("Pace-Vorgaben auf Standard zurücksetzen?")){for(var k in PAC~Ausschütteln 5km~ESR 10km~Off~Off~RACEE_DEF)PACE[k]=PACE_DEF[k];savePace();initPaceInputs();renderOv();if(document.getElementById("wkView").className!=="hide") Kerzerslauf 15km~Ausschütteln 4render();}};
 document.getElementById("expBtn").onclick=function(){
-var pd="";try{pd=localStorage.getItem(PDKEY)||"";}catch(e){}
-var payload={weeks:weeks,pace:PACE,paceDate:pd};var data=JSON.stringify(payload);var blob=new Blob([data],{type:"application/json"});
+var pd="";try{pd=localStorage.getItem(PDKEY)||"";}catch(km\n"+
+"19|Regeneration|22.03.27|Regeneration|Kraft/Stabi~ESR 11km~ESR 12km~ESR 11e){}
+var payload={weeks:weeks,pace:PACE,paceDate:pd};var data=JSON.stringify(payload);var blob=new Blob([data],{type:"application/jsonkm~Off~DL2 2x2k~LSR 20km HM80\n"+
+"20|Aufbau 2|29.03.27||Kraft/Stabi~ESR 13km~"});
 var url=URL.createObjectURL(blob);var a=document.createElement("a");
-a.href=url;a.download="jungfrau-plan-backup.json";document.body.appendChild(a);a.click();
+a.href=url;a.download="jungfrau-plan-backup.json";documentIVT 6x400m~ESR 13km~Off~DL2 3x2k~LSR 24km HM250\n"+
+"21|Aufbau 2|05.body.appendChild(a);a.click();
 document.body.removeChild(a);URL.revokeObjectURL(url);};
-document.getElementById("impBtn").onclick=function(){document.getElementById("impFile").click();};
+document.getElementById("impBtn").onclick=function(){document..04.27||Kraft/Stabi~ESR 14km~IVT 8x400m~ESR 13km~Off~DL2 2x2k+1x3k~LSR 26getElementById("impFile").click();};
 document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f)return;
-var r=new FileReader();r.onload=function(ev){try{var d=JSON.parse(ev.target.result);
-var wk=Array.isArray(d)?d:d.weeks;
+var r=new Fkm HM300\n"+
+"22|Aufbau 2|12.04.27||Kraft/Stabi~ESR 14km~Tempo 6km~ESR 14km~Off~DL2 ileReader();r.onload=function(ev){try{var d=JSON.parse(ev.target.result);
+var wk=Array.isArray(d)?d:d.weeks3x2k~LSR 28km HM350\n"+
+"23|Aufbau 2|19.04.27||Kraft/Stabi~ESR 15km~IVT 10x400m~ESR 14km~Off~DL2 2x3k~LSR 30km HM400\n"+
+"24|Aufbau 2|26.04.27|Richtung GP Bern|Kraft/Stabi~ESR 13km~Tempo 8km~ES;
 if(Array.isArray(wk)&&wk.length&&wk[0].days){weeks=wk;cur=0;save();
 if(d.pace){for(var k in PACE_DEF)PACE[k]=d.pace[k]||PACE_DEF[k];savePace();initPaceInputs();}
-if(d.paceDate){try{localStorage.setItem(PDKEY,d.paceDate);}catch(e2){}}showPaceDate();
+if(d.paceDate){try{localStorage.setItR 12km~Off~DL2 em(PDKEY,d.paceDate);}catch(e2){}}showPaceDate();
 sel();leg();renderOv();
-if(document.getElementById("wkView").className!=="hide")render();
+if(document.getElementById3x2k~LSR 24km HM250\n"+
+"25|Aufbau 2|03.05.27|Taper|Off~ESR 10km~Tempo 5km~Fartlek 8("wkView").className!=="hide")render();
 alert("Plan importiert: "+weeks.length+" Wochen.");}
-else{alert("Datei enthält keine gültigen Plandaten.");}}
+else{alert("Datei enkm~Off~DL2 2x1k~LSR 20km HM80\n"+
+"26|Aufbau 2|10.05.27|GP Bern 15thält keine gültigen Plandaten.");}}
 catch(err){alert("Import fehlgeschlagen: "+err.message);}};
-r.readAsText(f);e.target.value="";};
-function ovChart(){var n=weeks.length;var W=1160,h=120,pL=40,pR=44,pT=10,pB=26;
-var kmA=weeks.map(function(w){return w.days.reduce(function(s,d){return s+d.km;},0);});
+r.read.05.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE GP Bern 16km~Ausschütteln 4km\n"+
+"27|AsText(f);e.target.value="";};
+function ovChart(){var n=weeks.length;var W=1160,h=120,pL=40,pR=44Berg-Aufbau|17.05.27|Bergaufbau|Kraft/Stabi~ESR 13km~F,pT=10,pB=26;
+var kmA=weeks.map(function(w){return w.days.reduce(function(s,d){return s+d.km;},0);});artlek 12km~ESR 13km~Off~DL2 2x3k Berg HM350~LSR 26km HM800\n"+
+"28|Berg-Aufbau|24.05.27||Kraft/Stabi~ES
 var hmA=weeks.map(function(w){return w.days.reduce(function(s,d){return s+d.hm;},0);});
-var kmMax=Math.max.apply(null,kmA)||1,hmMax=Math.max.apply(null,hmA)||1;
+var kmMax=Math.max.apply(null,kmR 13km~DL2 3x2k~ESR 14km~Off~DL2 2x3k Berg HM400~LSR 30A)||1,hmMax=Math.max.apply(null,hmA)||1;
 var pw=W-pL-pR,ph=h-pT-pB;
-function X(i){return pL+(n<=1?0:i/(n-1)*pw);}
-function YK(v){return pT+ph-v/kmMax*ph;}
+function Xkm HM1000\n"+
+"29|Berg-Aufbau|31.05.27|Feldtest Berg|Kraft/Stabi~ESR 14(i){return pL+(n<=1?0:i/(n-1)*pw);}
+function YK(v){return pT+ph-vkm~Fartlek 14km~ESR 15km~Off~DL2 3x2k Berg HM450~LSR 34km HM1200\n"+
+"30|Berg/kmMax*ph;}
 function YH(v){return pT+ph-v/hmMax*ph;}
-var s='<line x1="'+pL+'" y1="'+(pT+ph)+'" x2="'+(W-pR)+'" y2="'+(pT+ph)+'" stroke="#e6eaef"/>';
-var hmp=hmA.map(function(v,i){return X(i)+","+YH(v);}).join(" ");
-var kmp=kmA.map(function(v,i){return X(i)+","+YK(v);}).join(" ");
-s+='<polyline points="'+hmp+'" fill="none" stroke="#FF6600" stroke-width="2"/>';
-s+='<polyline points="'+kmp+'" fill="none" stroke="#007ACE" stroke-width="2.5"/>';
+var s='<line x1="'+pL+'" y1="'-Aufbau|07.06.27|LGT Alpin 12.06.|Off~Ausschütteln 6+(pT+ph)+'" x2="'+(W-pR)+'" y2="'+(pT+ph)+'" stroke="#e6eaef"/>';
+var hmp=hmA.km~ESR 13km~Off~Off~RACE LGT Alpin Staffel~Ausschütteln 5km\n"+
+"31|Regenermap(function(v,i){return X(i)+","+YH(v);}).join(" ");
+var kmp=kmA.map(function(v,i){return X(i)+","+YK(v);}).joination|14.06.27|Regeneration|Kraft/Stabi~ESR 11km~ESR 12km~ESR 11km~Off~DL2 2x2k~LSR 20km HM80\n"+
+"32|(" ");
+s+='<polyline points="'+Aufhmp+'" fill="none" stroke="#FF6600" stroke-width="2"/>';
+s+='<polyline points="'+kmp+bau 2|21.06.27||Kraft/Stabi~ESR 13km~IVT 6x600m~ESR 13km~Off~DL2 2x3k Berg HM300~LSR 26'" fill="none" stroke="#007ACE" stroke-width="2.5"/>';
 weeks.forEach(function(w,i){
-s+='<circle cx="'+X(i)+'" cy="'+YK(kmA[i])+'" r="2" fill="#007ACE"/>';
-s+='<circle cx="'+X(i)+'" cy="'+YH(hmA[i])+'" r="2" fill="#FF6600"/>';
-if(i%3===0||i===n-1){s+='<text x="'+X(i)+'" y="'+(h-14)+'" fill="#6b7783" font-size="9" text-anchor="middle">KW'+kw(w.datum)+'</text>';}
-});
-s+='<text x="2" y="'+(pT+6)+'" fill="#007ACE" font-size="9">'+Math.round(kmMax)+' km</text>';
-s+='<text x="'+(W-pR+2)+'" y="'+(pT+6)+'" fill="#FF6600" font-size="9">'+hmMax+' HM</text>';
-document.getElementById("ovChart").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
+s+='<circle cx="km HM400\n"+
+"33|Aufbau 2|28.06.27|Taper Zermatt|Off'+X(i)+'" cy="'+YK(kmA[i])+'" r="2" fill="#007ACE"/>';
+s+='<circle cx~ESR 10km~Tempo 6km~Fartlek 8km~Off~DL2 2x1k~LSR 20km HM80\n"+
+"34|Aufbau 2|05.07.27|Zermatt 03="'+X(i)+'" cy="'+YH(hmA[i])+'" r="2" fill="#FF6600"/>';
+if(i%3===0||i===n-1){s+='.07.|Off~Ausschütteln 5km~ESR 10km~Off~Off~RACE Zermatt 21km HM900~<text x="'+X(i)+'" y="'+(h-14)+'" fill="#6b7783" font-size="9" text-anchor="middAusschütteln 4km\n"+
+"35|Marathon-spez.|12)+'" fill="#007ACE" font-size="9">'+Math.round(kmMax)+' km</text>';
+s+='<text x="'+(W-pR+2)+'" y.07.27|Regeneration|Kraft/Stabi~ESR 13km~ESR 14km~ESR 12km~Off~DL2 3x2k~LSR 24="'+(pT+6)+'" fill="#FF6600" font-size="9">'+hmMax+' HM</text>';
+document.getElementById("ovChart").innerHTML='km HM400\n"+
+"36|Marathon-spez.|19.07.27|Race-Sim Flach-Berg<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
+function raceTimeline(){var n=weeks Fueling|Kraft/Stabi~ESR 15km~DL2 2x2k+2.length;var W=1160,h=74,pL=40,pR=44,yx3k~=40;
+var pw=W-pL-pR;function X(i){return pL+(n<=1?0:i/(n-1)Fartlek 14km~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 38km H*pw);}
+var s='<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="#dM1000\n"+
+"37|Marathon-spez.|26.07.27|Race-Sim 2|Kraft/Stabi~ESR 15km~DL2 39dee3" stroke-width="2"/>';
+var up=true;
+weeks.forEach(function(w,i){var race=null;w.days.forEach(function(d){if(cls(x2k+1x3k~IVT 6x1000m~Off~DL2 3x3d.text)==="race")race=d;});
+if(race){var x=X(i);var name=race.text.replace(/^RACE\s*/i,"").replace(/\k Berg HM550~LSR Renn-Sim 40km HM1200\n"+
+"38|Marathon-spez.|02.08.27|DELOAD vor Peaks*HM\d+/i,"").replace(/DAY\s*/i,"").trim();
+if(w.bemerkung){var bm=w.bemerkung.split(" ")[0];if(b|Kraft/Stabi~ESR 16km~DL2 3x2k~ESR 13km~Off~DL2 2x2k Bergm&&bm.length>2)name=bm;}
+var ly=up?(y-14):(y+22);var ny=up?(y-26):(y+34 HM300~LSR 30km HM500\n"+
+"39|Marathon-spez.|09.08.27|PEAK grös);
+s+='<line x1="'+x+'" y1="'+y+'" x2="'+x+'" y2="'+(up?y-12:y+12)+'" stroke="#FF6ste Race-Sim|Kraft/Stabi~ESR 15km~DL2 3x2k+2x3k~I600" stroke-width="2"/>';
+s+='<circle cx="'+x+'" cy="'+y+'" r="5" fill="#FF6600"/>';
+s+='<text x="'+VT 8x1000m~Off~DL2 3x3k Berg HM500~LSR Renn-Sim 40km HM1500\n"+
+"40|Marathon-spez.|16.08.27|Generalprobe|Kraft/Stabi~ESR 14km~DL2 4x+'" y="'+ly+'" fill="#004B8D" font-size="10" font-weight="700" text-anchor="middle">KW'+kw(w.datum)+'x2k~Fartlek 14km~Off~DL2 </text>';
+s+='<text x="'+x+'" y="'+ny+'" fill="#2b3138" font-size="9" text-anchor="middle">'+esc(name).2x3k Berg HM400~LSR 34km HM1000\n"+
+"41|Taper|23.08.27|Taper -40slice(0,20%|Kraft/Stabi)+'</text>';
+up=!up;}});
+document.getElementById("ovTimeline").innerHTML='<svg width="100%" viewBox="0 0 '+W~ESR 12km~DL2 2x2k~Fartlek 8km~Off~DL2 2x2k Berg HM200~LSR 22+' '+h+'">'+s+'</svg>';}
 var ovDrag=null;
 function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="";
-weeks.forEach(function(w,wi){var tr=document.createElement("tr");
-var tot=w.days.reduce(function(s,d){return s+d.km;},0);
+wekm HM500\n"+
+"42|Taper|30.08.27||Off~ESR 10km~ESR 11eks.forEach(function(w,wi){var tr=document.createElement("tr");
+var tot=w.days.reduce(function(s,d){return s+d.km;},0km~Fartlek 6km~Off~ESR 13km +Renntempo~);
 var th=w.days.reduce(function(s,d){return s+d.hm;},0);
-var imb=imbalanced(w);if(imb)tr.className="imb";
-var warn=imb?'<span class="warnicon" title="Zwei harte Tage in Folge">&#9888;</span>':"";
-var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+warn+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
-w.days.forEach(function(d,di){var t=cls(d.text);var nc=noteColor(d.note);
-var dot=nc?'<span class="notedot" style="background:'+nc+'" title="'+esc(d.note)+'"></span>':"";
+var imb=imbalanced(w);if(imb)tr.classNameOff\n"+
+"43|Race|06.09.27|JUNGFRAU-MARATHON 11="imb";
+var warn=imb?'<span class="warnicon" title="Zwei harte Tage in Folge">&#9888.09.|Off~ESR 10km~ESR 10km~Off~Off~RACE DAY 42.2;</span>':"";
+var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+warn+'km HM1829~Ausrollen\n"+
+"44|Erho</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
+w.days.forEach(function(d,di){var t=cls(d.text);varlung|13.09.27|Nach dem Marathon - offen|Off~Off~Off~Off~Off~Off~Off\ nc=noteColor(d.note);
+var dot=nc?'<span class="notedot" style="background:'+nc+'" title="'+esc(d.note)+'"></spann"+
+"45|Erholung|20.09.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"46|Offen|27.09.27|offen|Off~Off~Off>':"";
 var tick=d.done?'<span class="donetick">&#9989;</span>':"";
-html+='<td class="daycell" draggable="true" data-wi="'+wi+'" data-di="'+di+'"><span class="cell'+(d.done?" done":"")+'" style="background:'+BGL[t]+';border-left:4px solid '+COL[t]+'">'+tick+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'</span></span></td>';});
-html+='<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td><td>'+esc(w.bemerkung)+'</td>';
+html+='<td class="daycell" draggable="true" data-w~Off~Off~Off~Off\n"+
+"47|Offen|04.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"48|Offen|11.10.27|offen|Off~Offi="'+wi+'" data-di="'+di+'"><span class="cell'+(d.done?" done":"")+'" style="background:'+BG~Off~Off~Off~Off~Off\n"+
+"49|Offen|18.10.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"50|Offen|25.10.27|offen|Off~Off~Off~Off~OffL[t]+';border-left:4px solid '+COL[t]+'">'+tick+esc(d.text)+dot+'<span class="pc">'+pace(d.text)+'~Off~Off\n"+
+"51|Offen|01.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"52|Offen|08.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"53|Offen</span></span></td>';});
+html+='<td><b>'+Math.round(tot)+'</b></td><td>'+th+'</td><td>'+|15.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"54|Offen|22.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"55|esc(w.bemerkung)+'</td>';
 tr.innerHTML=html;
-tr.querySelector(".wk").onclick=function(){cur=wi;showView("wk");render();};
+tr.querySelector(".wk").onclick=function(){cur=wi;showOffen|29.11.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"56|Offen|06.12.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"57|Offen|13.12View("wk");render();};
 var cells=tr.querySelectorAll(".daycell");
 cells.forEach(function(td){
-td.addEventListener("dragstart",function(e){ovDrag={wi:+td.dataset.wi,di:+td.dataset.di};td.classList.add("dragging");e.dataTransfer.effectAllowed="move";});
+td.addEventListener("d.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"58|Offen|20.12.27|offen|Off~Off~Off~Off~Off~Off~Off\n"+
+"59|Offen|27.12.27|offen Kragstart",function(e){ovDrag={wi:+td.dataset.wi,di:+td.dataset.di};td.classList.add("dragging");e.dataTransW52|Off~Off~Off~Off~Off~Off~Off";
+function build(){return DATA.split("\n").map(function(linefer.effectAllowed="move";});
 td.addEventListener("dragend",function(){td.classList.remove("dragging");});
-td.addEventListener("dragover",function(e){if(ovDrag&&ovDrag.wi===+td.dataset.wi){e.preventDefault();td.classList.add("dragover");}});
-td.addEventListener("dragleave",function(){td.classList.remove("dragover");});
+td.addEventListener("dragover",function(e){if(ovD){var p=line.split("|");var days=p[4].split("~").map(function(t,rag&&ovDrag.wi===+td.dataset.wi){e.preventDefault();td.classList.add("dragover");}});
+td.addEventListener("dragleave",function(){i){return{day:WD[i],text:t,km:km(ttd.classList.remove("dragover");});
 td.addEventListener("drop",function(e){e.preventDefault();td.classList.remove("dragover");
-if(!ovDrag)return;var twi=+td.dataset.wi,tdi=+td.dataset.di;
+if(!ovDrag)return;),hm:hm(t),done:false,note:""};});return{wochevar twi=+td.dataset.wi,tdi=+td.dataset.di;
 if(ovDrag.wi!==twi){ovDrag=null;return;}
-if(ovDrag.di===tdi){ovDrag=null;return;}
-var wk=weeks[twi];var m=wk.days.splice(ovDrag.di,1)[0];wk.days.splice(tdi,0,m);
+if(ovD:+p[0],phase:p[1],datum:p[2],bemerkung:p[3],days:days};})rag.di===tdi){ovDrag=null;return;}
+var wk=weeks[twi];var m=wk.days.splice(ovDrag.di,1)[0];wk;}
+var weeks=[],cur=0;
+function load(){try{var s=localStorage.getItem(KEY);weeks.days.splice(tdi,0,m);
 wk.days.forEach(function(x,k){x.day=WD[k];});ovDrag=null;save();renderOv();});
-td.addEventListener("click",function(){
+td.addEventListener=s?JSON.parse(s):build();}catch(e){weeks=build();}if(!Array.isArray(weeks)||!("click",function(){
 if(td.querySelector("textarea"))return;
-var twi=+td.dataset.wi,tdi=+td.dataset.di;var dd=weeks[twi].days[tdi];
+var twi=+td.dataset.wi,tdi=+td.dataset.di;var dd=weweeks.length)weeks=build();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(weeks));}catch(e){}}
+function eks[twi].days[tdi];
 td.setAttribute("draggable","false");
-td.innerHTML='<textarea class="celledit">'+esc(dd.text)+'</textarea>';
+td.innerHTML='<textarea class="celledit">'+esc(dd.text)+'</esc(s){return(s||"").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
+function showView(v){documenttextarea>';
 var ta=td.querySelector("textarea");ta.focus();ta.select();
 var fin=false;
-function commit(){if(fin)return;fin=true;dd.text=ta.value;dd.km=km(dd.text);dd.hm=hm(dd.text);save();renderOv();}
-ta.addEventListener("mousedown",function(ev){ev.stopPropagation();});
+function commit(){if(fin)return;fin=true;dd.text=ta.getElementById("ovView").className=v==="ov.value;dd.km=km(dd.text);dd.hm=hm(dd.text);save();renderOv();}
+ta.addEventListener("mousedown",function(ev){ev.stopP"?"":"hide";document.getElementById("wkView").className=v==="wk"?"":"hide";document.getElementById("lgView").className=v==="lg"?"":"hide";document.getElementById("tabropagation();});
 ta.addEventListener("blur",commit);
-ta.addEventListener("keydown",function(ev){if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();ta.blur();}else if(ev.key==="Escape"){fin=true;renderOv();}});
+ta.addEventListener("keydown",function(ev){if(ev.key==="Enter"&&!ev.shiftKey){Ov").className="tab"+(v==="ov"?" active":"");document.getElementById("tabWk").className="tab"+(v==="wk"?" active":"");document.getElementById("tabLev.preventDefault();ta.blur();}else if(ev.key==="Escape"){fin=true;renderOv();}});
 });
 });
-b.appendChild(tr);});
-ovChart();}
+b.appendChild(tr);});g").className="tab"+(v==="lg"?" active":"");}
+document.getElementById("tabOv").onclick=function(){showView("ov
+ovChart();raceTimeline();}
 function sel(){var s=document.getElementById("weekSel");s.innerHTML="";
-weeks.forEach(function(w,i){var o=document.createElement("option");o.value=i;o.textContent="KW "+kw(w.datum)+" - "+w.phase;s.appendChild(o);});s.value=cur;}
+weeks.forEach(function");renderOv();};
+document.getElementById("tabWk").onclick=function(){showView("wk");render();};
+document.getElementById("tabLg").onclick=function(){showView("lg");};
+function initPace(w,i){var o=document.createElement("option");o.value=i;o.textContent="KW "+kw(w.datum)+" - "+w.phase;s.appendChild(o);});Inputs(){var ins=document.querySelectorAll(".pcedit");ins.forEach(function(inp){var k=inp.getAttributes.value=cur;}
 document.getElementById("weekSel").addEventListener("change",function(e){cur=+e.target.value;render();});
-document.getElementById("bem").onchange=function(e){weeks[cur].bemerkung=e.target.value;save();};
-function leg(){var l=document.getElementById("legend");l.innerHTML="";
-Object.keys(LAB).forEach(function(k){l.innerHTML+='<span><i class="dot" style="background:'+COL[k]+'"></i>'+LAB[k]+'</span>';});}
-function move(i,dir){var w=weeks[cur];var j=i+dir;if(j<0||j>=w.days.length)return;
-var m=w.days.splice(i,1)[0];w.days.splice(j,0,m);w.days.forEach(function(x,k){x.day=WD[k];});save();render();}
+document.getElementById("bem("data-pk");inp.value=PACE[k]||"";inp.onchange=function(){PACE[k").onchange=function(e){weeks[cur].bemerkung=e.target.value;save();renderOv();};
+function leg(){var l=document.getElementById("legend");]=inp.value;savePace();stampPace();renderOv();if(documentl.innerHTML=".getElementById("w";
+Object.keys(LAB).forEach(function(k){l.innerHTML+='<span><i class="dot" style="background:'+COL[kkView").className!=="hide")render();};});}
+document.getElementById("paceReset").onclick=function(){if(confirm("Pace]+'"></i>'+LAB[k]+'</span>';});}
+function move(i,dir){var w=weeks[cur];var j=i+dir;if(j<0||j>-Vorgaben auf Standard zurücksetzen?")){for(var k in PACE_DEF)PACE[k]=PACE_DEF[k];savePace();init=w.days.length)return;
+var m=w.days.splice(i,1)[0];w.days.splice(j,0,m);w.days.forEach(function(x,k){x.dayPaceInputs();renderOv();if(document.getElementById("wkView").className!=="hide")render();}};
+document.getElementById("expBtn").onclick=function(){var pd="=WD[k];});save();render();}
 function render(){var w=weeks[cur];if(!w)return;document.getElementById("weekSel").value=cur;
-document.getElementById("bem").value=w.bemerkung||"";
-document.getElementById("phase").textContent="KW "+kw(w.datum)+" - Phase: "+w.phase+" - Start "+w.datum;
+document.getElementById("";try{pd=localStorage.getItem(PDKEY)||"";}catch(e){}var payload={weeks:weeks,pacebem").value=w.bemerkung||"";
+document.getElementById("phase").textContent="KW "+kw(w.datum)+" - Phase: "+w.phase+" - Start ":PACE,paceDate:pd};var data=JSON.stringify(payload);var blob=new Blob([data],{type:"application/json"});+w.datum;
 var b=document.getElementById("body");b.innerHTML="";
-w.days.forEach(function(d,i){var tr=document.createElement("tr");var t=cls(d.text);
+w.days.forEach(function(d,i){var tr=document.createElement("tr");var t=clsvar url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="jungfrau-plan-backup.json";document(d.text);
 tr.className="row"+(d.done?" done":"");tr.draggable=true;
-tr.innerHTML='<td class="handle"><span class="grip">&#9776;</span><span class="mv"><button data-a="up">&#9650;</button><button data-a="dn">&#9660;</button></span></td>'+
+tr.innerHTML='<td class="handle"><span class="gr.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);};
+document.getElementById("impBtn").onclick=function(){document.getElementById("impFile").click();};
+document.getElementById("impFileip">&#9776;</span><span class="mv"><button data-a="up">&#9650;</button><button data-a="dn">&#9660;</button></span></td").onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){try{var d=JSON.parse(>'+
 '<td><input type="checkbox" '+(d.done?"checked":"")+' data-a="done"></td>'+
-'<td class="wd">'+WD[i]+'</td><td><textarea data-a="text">'+esc(d.text)+'</textarea></td>'+
-'<td><input class="km" type="number" step="0.1" value="'+d.km+'" data-a="km"></td>'+
+'<td class="wd">'+WD[i]ev.target.result);var wk=Array.isArray(d)?d:d.weeks;if(Array.isArray(wk)&&wk.length&&wk[0].+'</td><td><textarea data-a="text">'+esc(d.text)+'</textarea></td>'+
+'<td><input class="km" type="number" step="0.1days){weeks=wk;cur=0;save();if(d.pace){for" value="'+d.km+'" data-a="km"></td>'+
 '<td class="pace">'+pace(d.text)+'</td>'+
-'<td><span class="pill" style="background:'+COL[t]+'">'+LAB[t]+'</span></td>'+
-'<td><span class="pill" style="background:'+COL[t]+'">'+INT[t]+'</span></td>'+
+'<td><span class="pill" style="background:'+(var k in PACE_DEF)PACE[k]=d.pace[k]||PACE_DEF[k];savePace();initPaceInputs()COL[t]+'">'+LAB[t]+'</span></td>'+
+'<td><span class="pill" style="background:'+COL[t]+'">'+INT[t]+'</span;}if(d.paceDate){try{localStorage.setItem(PDKEY,d.paceDate);}catch(e2></td>'+
 '<td><input class="note" type="text" value="'+esc(d.note||"")+'" placeholder="Notiz..." data-a="note"></td>';
-tr.querySelector('[data-a=up]').onclick=function(){move(i,-1);};
-tr.querySelector('[data-a=dn]').onclick=function(){move(i,1);};
+t){}}showPaceDate();sel();leg();renderOv();if(document.getElementById("wkView").className!=="hide")render();alert("Planr.querySelector('[data-a=up]').onclick=function(){move(i,-1);};
+tr.querySelector('[data-a=dn]').onclick=function(){move(i, importiert: "+weeks.length+" Wochen.");}else{alert("Datei enth1);};
 tr.querySelector('[data-a=done]').onchange=function(e){d.done=e.target.checked;save();render();};
-tr.querySelector('[data-a=text]').onchange=function(e){d.text=e.target.value;d.km=km(d.text);d.hm=hm(d.text);save();render();};
-tr.querySelector('[data-a=km]').onchange=function(e){d.km=parseFloat(e.target.value)||0;save();stats();chart();};
-tr.querySelector('[data-a=note]').onchange=function(e){d.note=e.target.value;save();};
+tr.querySelector('[data-a=text]').onchangeält keine gültigen Plandaten.");}}catch(err){alert("Import fehlgeschlagen: "+err.=function(e){d.text=e.target.value;d.km=km(d.text);d.hm=hm(d.text);save();render();};
+tr.querySelector('[data-a=km]').onchange=functionmessage);}};r.readAsText(f);e.target.value="";};
+function ovChart(){var n=weeks.length;(e){d.km=parseFloat(e.target.value)||0;save();stats();chart();};
+tr.querySelector('[data-a=note]').onchange=function(e){d.note=var W=1160,h=120,pL=40e.target.value;save();};
 tr.addEventListener("dragstart",function(e){e.dataTransfer.setData("t",i);});
-tr.addEventListener("dragover",function(e){e.preventDefault();tr.classList.add("dragover");});
+tr.addEventListener("dragover",function(e){e,pR=44,pT=10,pB=26;var kmA=weeks.map(function(w){return w.days.preventDefault();tr.classList.add("dragover");});
 tr.addEventListener("dragleave",function(){tr.classList.remove("dragover");});
-tr.addEventListener("drop",function(e){e.preventDefault();tr.classList.remove("dragover");var f=+e.dataTransfer.getData("t");if(f===i)return;
-var m=w.days.splice(f,1)[0];w.days.splice(i,0,m);w.days.forEach(function(x,k){x.day=WD[k];});save();render();});
-b.appendChild(tr);});
+tr.addEventListener("drop.reduce(function(s,d){return s+d.km;},0);});var hmA=weeks.map(function(w){return w.days.reduce(function(s,d",function(e){e.preventDefault();tr.classList.remove("dragover");var f=+e.dataTransfer.getData("t");if(f===i)return;
+var m){return s+d.hm;},0);});var kmMax=Math.max.apply(null,kmA)||1,hmMax=Math.max.apply(null,hmA)||1;var pw=w.days.splice(f,1)[0];w.days.splice(i,0,m);w.days.forEach(function(x,k){x.day=WD[k];});save();render();});
+b.appendChild=W-pL-pR,ph=h-pT-pB;function X(i){return pL+(n<=1?0:i/(n-1)*pw);}function YK(tr);});
 stats();chart();balance();}
 function stats(){var w=weeks[cur];
 var pl=w.days.reduce(function(s,d){return s+d.km;},0);
 var dn=w.days.filter(function(d){return d.done;}).reduce(function(s,d){return s+d.km;},0);
-var bl=weeks.reduce(function(s,x){return s+x.days.reduce(function(a,d){return a+d.km;},0);},0);
-var h=w.days.reduce(function(s,d){return s+d.hm;},0);
+var bl=we(v){return pT+ph-v/kmMax*ph;}function YHeks.reduce(function(s,x){return s+x.days.reduce(function(a,d){return a+d.km;},0);},0);
+var h=w.days.reduce(function(s,(v){return pT+ph-v/hmMax*ph;}var s='<line x1="'+pd){return s+d.hm;},0);
 var ld=w.days.reduce(function(s,d){return s+INT[cls(d.text)];},0);
-document.getElementById("kmPlan").textContent=Math.round(pl);
+document.getElementById("kmPlL+'" y1="'+(pT+ph)+'" x2="'+(W-pR)+'" y2="'+(pan").textContent=Math.round(pl);
 document.getElementById("kmDone").textContent=Math.round(dn);
-document.getElementById("prog").textContent=(pl?Math.round(dn/pl*100):0)+"%";
+document.getElementById("prog").textContent=(pl?Math.round(dT+ph)+'" stroke="#e6eaef"/>';var hmp=hmAn/pl*100):0)+"%";
 document.getElementById("kmBlock").textContent=Math.round(bl);
 document.getElementById("hmW").textContent=h;
-document.getElementById("load").textContent=ld;}
+document.getElementById.map(function(v,i){return X(i)+","+YH(v);}).join(" ");var k("load").textContent=ld;}
 function chart(){var w=weeks[cur];var mx=1;w.days.forEach(function(d){if(d.km>mx)mx=d.km;});
-var bw=30,gap=8,h=80,W=w.days.length*(bw+gap)+16,s="";
-w.days.forEach(function(d,i){var t=cls(d.text);var bh=d.km/mx*(h-22),x=8+i*(bw+gap),y=h-bh-14;
-s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+COL[t]+'"></rect>'+
-'<text x="'+(x+bw/2)+'" y="'+(y-3)+'" fill="#2b3138" font-size="9" text-anchor="middle">'+(d.km||"")+'</text>'+
-'<text x="'+(x+bw/2)+'" y="'+(h-3)+'" fill="#6b7783" font-size="9" text-anchor="middle">'+WD[i]+'</text>';});
+varmp=kmA.map(function(v,i){return X(i)+","+YK(v);}).join(" ");s+='<polyline points="'+hmp+'" fill="none" stroke="#FF6600" stroke-width="2"/>'; bw=30,gap=8,h=80,W=w.days.length*(bw+gap)+16s+='<polyline points="'+kmp+'" fill="none" stroke="#007ACE" stroke-width="2.5"/>';weeks,s="";
+w.days.forEach(function(d,i){var t=cls(d.text);var bh=d.km/mx*(h-22.forEach(function(w,i){s+='<circle cx="'+X(i)+'" cy="'+YK(kmA[i])+'" r="2" fill="#007ACE"/>';s+='<circle cx="'+X),x=8+i*(bw+gap),y=h-bh-14;
+s+='<rect x="'+x+'" y="'+y+'(i)+'" cy="'+YH(hmA[i])+'" r="2" fill="#FF6600"/>';if(i%3===0||" width="'+bw+'" height="'+bh+'" rx="3" fill="'+COL[t]+'"></rect>'+
+'<text x="'+(x+bw/2)+i===n-1){s+='<text x="'+X(i)+'" y="'+(h-14)+'" fill="#6'" y="'+(y-3)+'" fill="#2b3138" font-size="9" text-anchor="middle">'+(d.km||"")+'</text>'+
+'<text x="'+b7783" font-size="9" text-anchor="middle">KW'+kw(x+bw/2)+'" y="'+(h-3)+'" fill="#6b7783" font-size="9" text-anchor="middle">'+WD[i]+'</text>';});(w.datum)+'</text>';}});s+='<text x="2" y="'+(pT+6)+'" fill="#007
 document.getElementById("chart").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
-function balance(){var w=weeks[cur],bx=document.getElementById("balance");
+function balance(){var wACE" font-size="9">'+Math.round(kmMax)+' km</text>';s+='<text x="'+(W-pR+=weeks[cur],bx=document.getElementById("balance");
 var hard=w.days.map(function(d){return INT[cls(d.text)]>=3;});
-var rows=document.querySelectorAll("#body tr");rows.forEach(function(t){t.classList.remove("warn");});
-var c=[];for(var i=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1]){c.push(i);
-if(rows[i])rows[i].classList.add("warn");if(rows[i+1])rows[i+1].classList.add("warn");}}
-if(c.length){bx.className="balance bad";bx.innerHTML="Nicht ausbalanciert: "+c.length+"x zwei harte Tage direkt hintereinander ("+c.map(function(i){return WD[i]+"-"+WD[i+1];}).join(", ")+"). Klicke Woche ausbalancieren.";}
-else{bx.className="balance ok";bx.innerHTML="Ausgewogen: keine zwei harten Tage direkt hintereinander - Reize und Erholung im Gleichgewicht.";}}
+var r2)+'" y="'+(pT+6)+'" fill="#FF6600" font-size="9">'+hmMax+' HM</text>';document.getElementById("ovChart").innerHTML='<svg width="100%" viewows=document.querySelectorAll("#body tr");rows.forEach(function(t){t.classList.remove("warn");});
+var c=[];for(var iBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
+function race=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1]){c.push(i);
+if(rows[i])rows[i].classList.add("warn");if(rTimeline(){var n=weeks.length;var W=1160,h=74,pL=40,pR=44,y=40;var pwows[i+1])rows[i+1].classList.add("warn");}}
+if(c.length){bx.className="balance bad";bx.innerHTML="Nicht =W-pL-pR;function X(i){return pL+(n<=1?0:i/(n-1)*pw);}var s='<line x1="'+pausbL+'" y1="'+alanciert: "+c.length+"x zwei harte Tage direkt hintereinander ("+c.map(function(y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="#d9dee3" stroke-width="2"/>';var up=true;weeks.forEach(function(wi){return WD[i]+"-"+WD[i+1];}).join(", ")+"). Klicke Woche ausbalancieren.";}
+else{bx.className,i){var race=null;w.days.forEach(function(d){if(cls(d.text)==="race")race=d;});if(race="balance ok";bx.innerHTML="Ausgewogen: keine zwei harten Tage direkt hintereinander - Reize und Erholung im){var x=X(i);var name=race.text.replace(/^RACE\s*/i Gleichgewicht.";}}
 document.getElementById("suggest").onclick=function(){var w=weeks[cur];
-var hd=w.days.filter(function(d){return INT[cls(d.text)]>=3;});
+var hd=w.days.fil,"").replace(/\s*HM\d+/i,"").replace(/DAY\s*/i,"").trimter(function(d){return IN();ifT[cls(d.text)]>=3;});
 var ea=w.days.filter(function(d){return INT[cls(d.text)]<3;});
-var r=[],hi=0,ei=0;while(hi<hd.length||ei<ea.length){if(hi<hd.length)r.push(hd[hi++]);if(ei<ea.length)r.push(ea[ei++]);}
-for(var i=0;i<r.length-1;i++){if(INT[cls(r[i].text)]>=3&&INT[cls(r[i+1].text)]>=3){
-var j=-1;for(var k=i+2;k<r.length;k++){if(INT[cls(r[k].text)]<3){j=k;break;}}
+var r=[],h(w.bemerkung){var bm=w.bemerkung.split(" ")[0];if(bm&&bm.length>2i=0,ei=0;while(hi<hd.length||ei<ea.length){if(hi<hd.length)r.push(hd[hi++]);if(ei<ea.length)r.push()name=bm;}var ly=up?(y-14):(y+22);var ny=up?(ea[ei++]);}
+for(var i=0;i<r.length-1;i++){if(INT[cls(r[i].text)]>=3&&INT[cls(r[i+1].text)]>=y-26):(y+34);s+='<line x1="'+x+'" y1="'+y+'" x2="'+x+'" y2="'+(up3){
+var j=-1;for(var k=i+2;k<r.length;k++){if(INT[cls(r[k].text)]<3){j=k;break;}}?y-12:y+12)+'" stroke="#FF6600" stroke-width="2"/>';s+='<circle cx="'+x+'" cy="'+y+'" r="5
 if(j>-1){var e=r.splice(j,1)[0];r.splice(i+1,0,e);}}}
-r.forEach(function(d,k){d.day=WD[k];});w.days=r;save();render();};
+r.forEach(function(d,k){d.day" fill="#FF6600"/>';s+='<text x="'+x+'" y="'+ly+'" fill="#004B8D" font-size="10" font-weight="700=WD[k];});w.days=r;save();render();};
 document.getElementById("reset").onclick=function(){weeks[cur]=build()[cur];save();render();renderOv();};
-document.getElementById("resetAll").onclick=function(){if(confirm("Alle Änderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}load();sel();render();renderOv();}};
-loadPace();load();sel();leg();initPaceInputs();showPaceDate();renderOv();
+document" text-anchor="middle">KW'+kw(w.datum)+'</text>';s+='<text x="'+x+'" y="'+ny+'" fill="#2b.getElementById("resetAll").onclick=function(){if(confirm("Alle Änderungen verwerfen?")){try{localStorage.removeItem(KEY3138" font-size="9" text-anchor="middle">'+esc(name).slice(0,20)+'</text>';up=!);}catch(e){}load();sel();render();renderOv();}};
+loadPace();load();sel();leg();initup;}});document.getElementById("ovTimeline").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}PaceInputs();showPaceDate();renderOv();
 S.textContent="Trainingsplan korrekt geladen.";
-}catch(err){S.className="bad";S.textContent="Fehler: "+err.message;}
+}catch(err
+var ovDrag=null;
+function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="){S.className="bad";S.textContent="Fehler: "+err.message;}
 </script></body></html>

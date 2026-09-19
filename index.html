@@ -36,7 +36,9 @@ th{background:#f4f7fb;color:var(--blue);font-weight:700}
 .ov .wk{font-weight:700;color:var(--blue);cursor:pointer}
 .ov .wk:hover{text-decoration:underline}
 .ov tr.imb td{background:#fff6f0}
+.ov tr.today td{box-shadow:inset 3px 0 0 var(--blue2)}
 .ov .warnicon{color:var(--orange);cursor:help;margin-left:3px}
+.ov .growicon{color:#d97706;cursor:help;margin-left:3px}
 .ov .daycell{cursor:pointer}
 .ov .daycell.dragover{box-shadow:inset 0 0 0 2px var(--orange)}
 .ov .daycell.dragging{opacity:.4}
@@ -56,7 +58,8 @@ tr.warn td{background:#fff3ec}
 .mv button{background:#eef2f6;border:1px solid var(--line);border-radius:6px;color:var(--blue);font-size:.6rem;line-height:1;padding:3px 5px;cursor:pointer}
 .mv button:active{background:var(--blue);color:#fff}
 textarea{width:100%;min-width:200px;min-height:42px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px;font:inherit;font-size:.82rem}
-input.km{width:58px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px}
+input.km{width:52px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px}
+input.ist{width:52px;background:#fffdf5;color:var(--txt);border:1px solid #f0d9a8;border-radius:8px;padding:6px}
 input.note{width:150px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px;font-size:.8rem}
 .pace{color:var(--muted);font-size:.8rem;white-space:nowrap}
 .pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.72rem;color:#fff;font-weight:700}
@@ -112,6 +115,8 @@ input.note{width:110px}
 <button class="tab" id="tabLg">Legende</button>
 </div>
 <div class="bar">
+<button class="btn ghost" id="heuteBtn">&#128205; Heute</button>
+<button class="btn ghost" id="undoBtn">&#8630; Rückgängig</button>
 <button class="btn ghost" id="expBtn">&#8681; Plan exportieren</button>
 <button class="btn ghost" id="impBtn">&#8679; Plan importieren</button>
 <input type="file" id="impFile" accept=".json,application/json" style="display:none">
@@ -121,7 +126,7 @@ input.note{width:110px}
 <h3 style="color:#004B8D;margin:4px 0 6px">Timeline: Trainingsphasen &amp; Wettkämpfe</h3>
 <div id="ovTimeline"></div>
 <div class="legend" id="phaseLegend"></div>
-<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail. &#127956; = Berglauf.</span></div>
+<div class="bar"><span class="phase">Einheit anklicken zum Bearbeiten, ziehen zum Verschieben. Klick auf die KW-Spalte öffnet die Woche im Detail. &#127956; = Berglauf, &#9650; = &gt;10 % km-Zuwachs.</span></div>
 <div class="scroll"><table class="ov"><thead><tr>
 <th>KW</th><th>Phase</th><th>Datum</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th><th>Sa</th><th>So</th><th>km</th><th>HM</th><th>Bemerkung</th>
 </tr></thead><tbody id="ovBody"></tbody></table></div>
@@ -131,12 +136,14 @@ input.note{width:110px}
 <div class="bar">
 <select class="week" id="weekSel"></select>
 <button class="btn orange" id="suggest">Woche ausbalancieren</button>
+<button class="btn ghost" id="printWk">&#128424; Woche drucken</button>
 <button class="btn ghost" id="reset">Woche zurücksetzen</button>
 <button class="btn ghost" id="resetAll">Alles zurücksetzen</button>
 </div>
 <div class="bar"><label style="font-size:.85rem;color:#6b7783;flex:1;display:flex;align-items:center;gap:6px">Bemerkung Woche:<input class="bem" id="bem" placeholder="Notiz zur Woche..."></label></div>
 <div class="phase" id="phase"></div>
 <div class="stats">
+<div class="stat"><b id="kmIst">0</b><span>km Ist</span></div>
 <div class="stat"><b id="kmDone">0</b><span>km erledigt</span></div>
 <div class="stat"><b id="kmPlan">0</b><span>km geplant</span></div>
 <div class="stat"><b id="prog">0%</b><span>Fortschritt</span></div>
@@ -146,8 +153,8 @@ input.note{width:110px}
 <div id="chart"></div>
 <div class="balance" id="balance"></div>
 <div class="legend" id="legend"></div>
-<div class="scroll"><table><thead><tr><th>Sort</th><th>OK</th><th>Tag</th><th>Einheit</th><th>km</th><th>Pace</th><th>Typ</th><th>Last</th><th>Notiz</th></tr></thead><tbody id="body"></tbody></table></div>
-<p class="hint">Tipp: Am Desktop Zeile am Griff &#9776; ziehen. Auf allen Geräten mit &#9650;/&#9660; verschieben. Typ und Pace werden automatisch aus dem Text erkannt. Bei Schwelle/Intervall zählen die Wiederholungs-km + 6 km Ein-/Auslaufen.</p>
+<div class="scroll"><table><thead><tr><th>Sort</th><th>OK</th><th>Tag</th><th>Einheit</th><th>Soll km</th><th>Ist km</th><th>Pace</th><th>Typ</th><th>Last</th><th>Notiz</th></tr></thead><tbody id="body"></tbody></table></div>
+<p class="hint">Tipp: Am Desktop Zeile am Griff &#9776; ziehen. Auf allen Geräten mit &#9650;/&#9660; verschieben. „Ist km" trägst du nach dem Lauf ein. Bei Schwelle/Intervall zählen die Wiederholungs-km + 6 km Ein-/Auslaufen.</p>
 </div>
 
 <div id="lgView" class="hide">
@@ -171,6 +178,14 @@ input.note{width:110px}
 </tbody></table></div>
 <p style="color:#6b7783;font-size:.8rem" id="paceDate"></p>
 <p><button class="btn ghost" id="paceReset">Pace-Vorgaben zurücksetzen</button></p>
+<h3>Neue Funktionen</h3>
+<ul>
+<li><b>Ist km:</b> Tatsächlich gelaufene km pro Einheit erfassen &ndash; Soll/Ist-Vergleich in den Kennzahlen.</li>
+<li><b>&#9650; km-Zuwachs:</b> Warnung im Gesamtplan, wenn eine Woche &gt;10 % mehr km als die Vorwoche hat.</li>
+<li><b>Woche drucken:</b> Öffnet ein Druck-/PDF-Blatt der aktuellen Woche.</li>
+<li><b>Rückgängig:</b> Macht die letzte Änderung schrittweise rückgängig.</li>
+<li><b>Heute:</b> Springt zur aktuellen Kalenderwoche.</li>
+</ul>
 <h3>Datensicherung</h3>
 <ul>
 <li><b>Plan exportieren:</b> Speichert deinen aktuellen Stand als JSON-Datei (Backup).</li>
@@ -195,10 +210,6 @@ input.note{width:110px}
 <li><b>coupiert:</b> welliges Profil.</li>
 <li><b>flach:</b> Bahn/Ebene.</li>
 </ul>
-<h3>km-Berechnung Schwelle &amp; Intervall</h3>
-<ul>
-<li>Wiederholungs-km + 6 km Ein-/Auslaufen.</li>
-</ul>
 <h3>Trainingsprinzipien</h3>
 <ul>
 <li>Periodisierung: Grundlage &rarr; Aufbau &rarr; Berg-Aufbau &rarr; Marathon-spezifisch &rarr; Taper</li>
@@ -216,7 +227,7 @@ var BGL={easy:"#e8f0fe",long:"#fde5e5",interval:"#efe6fb",threshold:"#fdf0d9",te
 var LAB={easy:"Easy",long:"Long Run",interval:"Intervall",threshold:"Schwelle",tempo:"Tempo (DL1)",fartlek:"Fartlek",strength:"Kraft/Stabi",rest:"Ruhe",race:"Wettkampf"};
 var INT={rest:0,strength:2,easy:1,long:4,interval:4,threshold:3,tempo:3,fartlek:3,race:5};
 var PHCOL={"Grundlage 1":"#8ecae6","Grundlage 2":"#4fa3c7","Aufbau 1":"#ffd166","Aufbau 2":"#f4a261","Regeneration":"#b8c0cc","Berg-Aufbau":"#8d5bd6","Marathon-spez.":"#ef6f6c","Taper":"#a8dadc","Race":"#FF6600","Erholung":"#c7d2cc","Offen":"#e6eaef"};
-var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v14",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
+var WD=["Mo","Di","Mi","Do","Fr","Sa","So"],KEY="stefan-jf-v15",PKEY="stefan-jf-pace-v1",PDKEY="stefan-jf-pace-date-v1";
 var PACE_DEF={esr:"4:45-5:15/km",lsr:"4:15-4:35/km",lsrlocker:"4:45-5:05/km",rennsim:"3:55-4:10/km flach, dann n.RPE",ivt:"3:10-3:30/km",dl2:"3:30-3:40/km",dl2berg:"3:40-4:10/km +HM",dl2locker:"3:35-3:45/km",tempo:"3:40-4:00/km",fartlek:"4:00-4:20/km wechselnd",kraft:"RPE 6-8",aus:"5:00-5:30/km"};
 var PACE={};
 function loadPace(){try{var s=localStorage.getItem(PKEY);var o=s?JSON.parse(s):{};for(var k in PACE_DEF){PACE[k]=(o&&o[k])?o[k]:PACE_DEF[k];}}catch(e){for(var k2 in PACE_DEF)PACE[k2]=PACE_DEF[k2];}}
@@ -241,6 +252,7 @@ return"#FF6600";}
 function isMountainRace(name){var u=(name||"").toUpperCase();return u.indexOf("LGT")>-1||u.indexOf("ZERMATT")>-1||u.indexOf("JUNGFRAU")>-1||u.indexOf("RACE DAY")>-1;}
 function imbalanced(w){var hard=w.days.map(function(d){return INT[cls(d.text)]>=3;});
 for(var i=0;i<hard.length-1;i++){if(hard[i]&&hard[i+1])return true;}return false;}
+function weekKm(w){return w.days.reduce(function(s,d){return s+d.km;},0);}
 function pace(t){var c=cls(t),T=(t||"").toUpperCase();
 if(c==="rest")return"-";
 if(c==="strength")return PACE.kraft;
@@ -325,12 +337,17 @@ var DATA=
 "59|Offen|27.12.27|offen KW52|Off~Off~Off~Off~Off~Off~Off";
 function build(){return DATA.split("\n").map(function(line){
 var p=line.split("|");var days=p[4].split("~").map(function(t,i){
-return{day:WD[i],text:t,km:km(t),hm:hm(t),done:false,note:""};});
+return{day:WD[i],text:t,km:km(t),hm:hm(t),done:false,note:"",ist:0};});
 return{woche:+p[0],phase:p[1],datum:p[2],bemerkung:p[3],days:days};});}
-var weeks=[],cur=0;
+var weeks=[],cur=0,UNDO=[];
 function load(){try{var s=localStorage.getItem(KEY);weeks=s?JSON.parse(s):build();}catch(e){weeks=build();}
-if(!Array.isArray(weeks)||!weeks.length)weeks=build();}
+if(!Array.isArray(weeks)||!weeks.length)weeks=build();
+weeks.forEach(function(w){w.days.forEach(function(d){if(typeof d.ist!=="number")d.ist=0;});});}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(weeks));}catch(e){}}
+function snapshot(){try{UNDO.push(JSON.stringify(weeks));if(UNDO.length>40)UNDO.shift();updateUndo();}catch(e){}}
+function updateUndo(){var b=document.getElementById("undoBtn");if(b)b.disabled=(UNDO.length===0);}
+function undo(){if(!UNDO.length)return;try{weeks=JSON.parse(UNDO.pop());save();sel();leg();renderOv();
+if(document.getElementById("wkView").className!=="hide")render();updateUndo();}catch(e){}}
 function esc(s){return(s||"").replace(/</g,"&lt;").replace(/"/g,"&quot;");}
 function showView(v){document.getElementById("ovView").className=v==="ov"?"":"hide";
 document.getElementById("wkView").className=v==="wk"?"":"hide";
@@ -341,6 +358,10 @@ document.getElementById("tabLg").className="tab"+(v==="lg"?" active":"");}
 document.getElementById("tabOv").onclick=function(){showView("ov");renderOv();};
 document.getElementById("tabWk").onclick=function(){showView("wk");render();};
 document.getElementById("tabLg").onclick=function(){showView("lg");};
+document.getElementById("undoBtn").onclick=undo;
+document.getElementById("heuteBtn").onclick=function(){var t=new Date();var idx=0;
+for(var i=0;i<weeks.length;i++){var d=parseD(weeks[i].datum);if(d&&d<=t)idx=i;}
+cur=idx;showView("wk");render();};
 function initPaceInputs(){var ins=document.querySelectorAll(".pcedit");
 ins.forEach(function(inp){var k=inp.getAttribute("data-pk");inp.value=PACE[k]||"";
 inp.onchange=function(){PACE[k]=inp.value;savePace();stampPace();
@@ -356,7 +377,8 @@ document.getElementById("impBtn").onclick=function(){document.getElementById("im
 document.getElementById("impFile").onchange=function(e){var f=e.target.files[0];if(!f)return;
 var r=new FileReader();r.onload=function(ev){try{var d=JSON.parse(ev.target.result);
 var wk=Array.isArray(d)?d:d.weeks;
-if(Array.isArray(wk)&&wk.length&&wk[0].days){weeks=wk;cur=0;save();
+if(Array.isArray(wk)&&wk.length&&wk[0].days){weeks=wk;cur=0;
+weeks.forEach(function(w){w.days.forEach(function(dd){if(typeof dd.ist!=="number")dd.ist=0;});});save();
 if(d.pace){for(var k in PACE_DEF)PACE[k]=d.pace[k]||PACE_DEF[k];savePace();initPaceInputs();}
 if(d.paceDate){try{localStorage.setItem(PDKEY,d.paceDate);}catch(e2){}}showPaceDate();
 sel();leg();renderOv();
@@ -365,6 +387,21 @@ alert("Plan importiert: "+weeks.length+" Wochen.");}
 else{alert("Datei enthält keine gültigen Plandaten.");}}
 catch(err){alert("Import fehlgeschlagen: "+err.message);}};
 r.readAsText(f);e.target.value="";};
+document.getElementById("printWk").onclick=function(){var w=weeks[cur];if(!w)return;
+var rows=w.days.map(function(d){var done=d.done?"&#10003;":"";
+return '<tr><td>'+done+'</td><td>'+d.day+'</td><td>'+esc(d.text)+'</td><td>'+d.km+'</td><td>'+(d.ist||0)+'</td><td>'+pace(d.text)+'</td><td>'+esc(d.note||"")+'</td></tr>';}).join("");
+var tot=Math.round(weekKm(w));var hh=w.days.reduce(function(s,d){return s+d.hm;},0);
+var win=window.open("","_blank");if(!win){alert("Bitte Pop-ups erlauben, um zu drucken.");return;}
+var html='<html><head><meta charset="UTF-8"><title>KW'+kw(w.datum)+" - "+esc(w.phase)+'</title>'+
+'<style>body{font-family:Arial,sans-serif;color:#2b3138;padding:20px}h1{color:#004B8D;font-size:18px}h2{color:#6b7783;font-size:13px;font-weight:normal;margin-top:2px}'+
+'table{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px}th,td{border:1px solid #ccc;padding:6px 8px;text-align:left}th{background:#f4f7fb;color:#004B8D}'+
+'.sum{margin-top:10px;font-size:13px}</style></head><body>'+
+'<h1>&#127956; Jungfrau-Marathon 2027 - KW'+kw(w.datum)+'</h1>'+
+'<h2>Phase: '+esc(w.phase)+' &middot; Start '+esc(w.datum)+(w.bemerkung?(' &middot; '+esc(w.bemerkung)):"")+'</h2>'+
+'<table><thead><tr><th>OK</th><th>Tag</th><th>Einheit</th><th>Soll km</th><th>Ist km</th><th>Pace</th><th>Notiz</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+'<p class="sum"><b>Summe:</b> '+tot+' km geplant &middot; '+hh+' HM</p>'+
+'</body></html>';
+win.document.write(html);win.document.close();win.focus();setTimeout(function(){win.print();},250);};
 function raceTimeline(){var n=weeks.length;var W=1160,pL=30,pR=30,bandTop=32,bandH=26,axisY=78,h=132;
 var pw=W-pL-pR;function X(i){return pL+(n<=1?0:i/(n-1)*pw);}
 var bandW=pw/(n-1||1);var s="";
@@ -389,12 +426,19 @@ var l=document.getElementById("phaseLegend");l.innerHTML="";
 order.forEach(function(p){l.innerHTML+='<span><i class="dot" style="background:'+(PHCOL[p]||"#e6eaef")+'"></i>'+esc(p)+'</span>';});}
 var ovDrag=null;
 function renderOv(){var b=document.getElementById("ovBody");b.innerHTML="";
+var today=new Date();var todayIdx=-1;
+for(var ti=0;ti<weeks.length;ti++){var dd=parseD(weeks[ti].datum);if(dd&&dd<=today)todayIdx=ti;}
+var prevKm=0;
 weeks.forEach(function(w,wi){var tr=document.createElement("tr");
-var tot=w.days.reduce(function(s,d){return s+d.km;},0);
+var tot=weekKm(w);
 var th=w.days.reduce(function(s,d){return s+d.hm;},0);
-var imb=imbalanced(w);if(imb)tr.className="imb";
+var imb=imbalanced(w);var grow=(prevKm>0&&tot>prevKm*1.1);
+var clsn=(imb?"imb ":"")+(grow?"grow ":"")+(wi===todayIdx?"today":"");
+if(clsn.trim())tr.className=clsn.trim();
+prevKm=tot;
 var warn=imb?'<span class="warnicon" title="Zwei harte Tage in Folge">&#9888;</span>':"";
-var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+warn+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
+var growi=grow?'<span class="growicon" title="km-Zuwachs &gt;10 % zur Vorwoche">&#9650;</span>':"";
+var html='<td class="wk" data-wi="'+wi+'">KW'+kw(w.datum)+warn+growi+'</td><td>'+esc(w.phase)+'</td><td>'+esc(w.datum)+'</td>';
 w.days.forEach(function(d,di){var t=cls(d.text);var nc=noteColor(d.note);
 var dot=nc?'<span class="notedot" style="background:'+nc+'" title="'+esc(d.note)+'"></span>':"";
 var tick=d.done?'<span class="donetick">&#9989;</span>':"";
@@ -413,7 +457,7 @@ td.addEventListener("drop",function(e){e.preventDefault();td.classList.remove("d
 if(!ovDrag)return;var twi=+td.dataset.wi,tdi=+td.dataset.di;
 if(ovDrag.wi!==twi){ovDrag=null;return;}
 if(ovDrag.di===tdi){ovDrag=null;return;}
-var wk=weeks[twi];var m=wk.days.splice(ovDrag.di,1)[0];wk.days.splice(tdi,0,m);
+snapshot();var wk=weeks[twi];var m=wk.days.splice(ovDrag.di,1)[0];wk.days.splice(tdi,0,m);
 wk.days.forEach(function(x,k){x.day=WD[k];});ovDrag=null;save();renderOv();});
 td.addEventListener("click",function(){
 if(td.querySelector("textarea"))return;
@@ -422,22 +466,22 @@ td.setAttribute("draggable","false");
 td.innerHTML='<textarea class="celledit">'+esc(dd.text)+'</textarea>';
 var ta=td.querySelector("textarea");ta.focus();ta.select();
 var fin=false;
-function commit(){if(fin)return;fin=true;dd.text=ta.value;dd.km=km(dd.text);dd.hm=hm(dd.text);save();renderOv();}
+function commit(){if(fin)return;fin=true;if(ta.value!==dd.text){snapshot();dd.text=ta.value;dd.km=km(dd.text);dd.hm=hm(dd.text);save();}renderOv();}
 ta.addEventListener("mousedown",function(ev){ev.stopPropagation();});
 ta.addEventListener("blur",commit);
 ta.addEventListener("keydown",function(ev){if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();ta.blur();}else if(ev.key==="Escape"){fin=true;renderOv();}});
 });
 });
 b.appendChild(tr);});
-raceTimeline();phaseLegend();}
+raceTimeline();phaseLegend();updateUndo();}
 function sel(){var s=document.getElementById("weekSel");s.innerHTML="";
 weeks.forEach(function(w,i){var o=document.createElement("option");o.value=i;o.textContent="KW "+kw(w.datum)+" - "+w.phase;s.appendChild(o);});s.value=cur;}
 document.getElementById("weekSel").addEventListener("change",function(e){cur=+e.target.value;render();});
-document.getElementById("bem").onchange=function(e){weeks[cur].bemerkung=e.target.value;save();};
+document.getElementById("bem").onchange=function(e){snapshot();weeks[cur].bemerkung=e.target.value;save();};
 function leg(){var l=document.getElementById("legend");l.innerHTML="";
 Object.keys(LAB).forEach(function(k){l.innerHTML+='<span><i class="dot" style="background:'+COL[k]+'"></i>'+LAB[k]+'</span>';});}
 function move(i,dir){var w=weeks[cur];var j=i+dir;if(j<0||j>=w.days.length)return;
-var m=w.days.splice(i,1)[0];w.days.splice(j,0,m);w.days.forEach(function(x,k){x.day=WD[k];});save();render();}
+snapshot();var m=w.days.splice(i,1)[0];w.days.splice(j,0,m);w.days.forEach(function(x,k){x.day=WD[k];});save();render();}
 function render(){var w=weeks[cur];if(!w)return;document.getElementById("weekSel").value=cur;
 document.getElementById("bem").value=w.bemerkung||"";
 document.getElementById("phase").textContent="KW "+kw(w.datum)+" - Phase: "+w.phase+" - Start "+w.datum;
@@ -448,40 +492,45 @@ tr.innerHTML='<td class="handle"><span class="grip">&#9776;</span><span class="m
 '<td><input type="checkbox" '+(d.done?"checked":"")+' data-a="done"></td>'+
 '<td class="wd">'+WD[i]+'</td><td><textarea data-a="text">'+esc(d.text)+'</textarea></td>'+
 '<td><input class="km" type="number" step="0.1" value="'+d.km+'" data-a="km"></td>'+
+'<td><input class="ist" type="number" step="0.1" value="'+(d.ist||0)+'" data-a="ist"></td>'+
 '<td class="pace">'+pace(d.text)+'</td>'+
 '<td><span class="pill" style="background:'+COL[t]+'">'+LAB[t]+'</span></td>'+
 '<td><span class="pill" style="background:'+COL[t]+'">'+INT[t]+'</span></td>'+
 '<td><input class="note" type="text" value="'+esc(d.note||"")+'" placeholder="Notiz..." data-a="note"></td>';
 tr.querySelector('[data-a=up]').onclick=function(){move(i,-1);};
 tr.querySelector('[data-a=dn]').onclick=function(){move(i,1);};
-tr.querySelector('[data-a=done]').onchange=function(e){d.done=e.target.checked;save();render();};
-tr.querySelector('[data-a=text]').onchange=function(e){d.text=e.target.value;d.km=km(d.text);d.hm=hm(d.text);save();render();};
-tr.querySelector('[data-a=km]').onchange=function(e){d.km=parseFloat(e.target.value)||0;save();stats();chart();};
-tr.querySelector('[data-a=note]').onchange=function(e){d.note=e.target.value;save();};
+tr.querySelector('[data-a=done]').onchange=function(e){snapshot();d.done=e.target.checked;save();render();};
+tr.querySelector('[data-a=text]').onchange=function(e){snapshot();d.text=e.target.value;d.km=km(d.text);d.hm=hm(d.text);save();render();};
+tr.querySelector('[data-a=km]').onchange=function(e){snapshot();d.km=parseFloat(e.target.value)||0;save();stats();chart();};
+tr.querySelector('[data-a=ist]').onchange=function(e){snapshot();d.ist=parseFloat(e.target.value)||0;save();stats();};
+tr.querySelector('[data-a=note]').onchange=function(e){snapshot();d.note=e.target.value;save();};
 tr.addEventListener("dragstart",function(e){e.dataTransfer.setData("t",i);});
 tr.addEventListener("dragover",function(e){e.preventDefault();tr.classList.add("dragover");});
 tr.addEventListener("dragleave",function(){tr.classList.remove("dragover");});
 tr.addEventListener("drop",function(e){e.preventDefault();tr.classList.remove("dragover");var f=+e.dataTransfer.getData("t");if(f===i)return;
-var m=w.days.splice(f,1)[0];w.days.splice(i,0,m);w.days.forEach(function(x,k){x.day=WD[k];});save();render();});
+snapshot();var m=w.days.splice(f,1)[0];w.days.splice(i,0,m);w.days.forEach(function(x,k){x.day=WD[k];});save();render();});
 b.appendChild(tr);});
-stats();chart();balance();}
+stats();chart();balance();updateUndo();}
 function stats(){var w=weeks[cur];
-var pl=w.days.reduce(function(s,d){return s+d.km;},0);
+var pl=weekKm(w);
 var dn=w.days.filter(function(d){return d.done;}).reduce(function(s,d){return s+d.km;},0);
-var bl=weeks.reduce(function(s,x){return s+x.days.reduce(function(a,d){return a+d.km;},0);},0);
+var ist=w.days.reduce(function(s,d){return s+(d.ist||0);},0);
+var bl=weeks.reduce(function(s,x){return s+weekKm(x);},0);
 var h=w.days.reduce(function(s,d){return s+d.hm;},0);
 var ld=w.days.reduce(function(s,d){return s+INT[cls(d.text)];},0);
+document.getElementById("kmIst").textContent=Math.round(ist);
 document.getElementById("kmPlan").textContent=Math.round(pl);
 document.getElementById("kmDone").textContent=Math.round(dn);
-document.getElementById("prog").textContent=(pl?Math.round(dn/pl*100):0)+"%";
+document.getElementById("prog").textContent=(pl?Math.round(ist/pl*100):0)+"%";
 document.getElementById("kmBlock").textContent=Math.round(bl);
 document.getElementById("hmW").textContent=h;
 document.getElementById("load").textContent=ld;}
-function chart(){var w=weeks[cur];var mx=1;w.days.forEach(function(d){if(d.km>mx)mx=d.km;});
+function chart(){var w=weeks[cur];var mx=1;w.days.forEach(function(d){if(d.km>mx)mx=d.km;if((d.ist||0)>mx)mx=d.ist;});
 var bw=30,gap=8,h=80,W=w.days.length*(bw+gap)+16,s="";
 w.days.forEach(function(d,i){var t=cls(d.text);var bh=d.km/mx*(h-22),x=8+i*(bw+gap),y=h-bh-14;
-s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+COL[t]+'"></rect>'+
-'<text x="'+(x+bw/2)+'" y="'+(y-3)+'" fill="#2b3138" font-size="9" text-anchor="middle">'+(d.km||"")+'</text>'+
+s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+COL[t]+'"></rect>';
+if(d.ist>0){var ih=d.ist/mx*(h-22),iy=h-ih-14;s+='<rect x="'+(x+bw-6)+'" y="'+iy+'" width="5" height="'+ih+'" rx="1" fill="#12a594"></rect>';}
+s+='<text x="'+(x+bw/2)+'" y="'+(y-3)+'" fill="#2b3138" font-size="9" text-anchor="middle">'+(d.km||"")+'</text>'+
 '<text x="'+(x+bw/2)+'" y="'+(h-3)+'" fill="#6b7783" font-size="9" text-anchor="middle">'+WD[i]+'</text>';});
 document.getElementById("chart").innerHTML='<svg width="100%" viewBox="0 0 '+W+' '+h+'">'+s+'</svg>';}
 function balance(){var w=weeks[cur],bx=document.getElementById("balance");
@@ -492,6 +541,7 @@ if(rows[i])rows[i].classList.add("warn");if(rows[i+1])rows[i+1].classList.add("w
 if(c.length){bx.className="balance bad";bx.innerHTML="Nicht ausbalanciert: "+c.length+"x zwei harte Tage direkt hintereinander ("+c.map(function(i){return WD[i]+"-"+WD[i+1];}).join(", ")+"). Klicke Woche ausbalancieren.";}
 else{bx.className="balance ok";bx.innerHTML="Ausgewogen: keine zwei harten Tage direkt hintereinander - Reize und Erholung im Gleichgewicht.";}}
 document.getElementById("suggest").onclick=function(){var w=weeks[cur];
+snapshot();
 var hd=w.days.filter(function(d){return INT[cls(d.text)]>=3;});
 var ea=w.days.filter(function(d){return INT[cls(d.text)]<3;});
 var r=[],hi=0,ei=0;while(hi<hd.length||ei<ea.length){if(hi<hd.length)r.push(hd[hi++]);if(ei<ea.length)r.push(ea[ei++]);}
@@ -499,9 +549,9 @@ for(var i=0;i<r.length-1;i++){if(INT[cls(r[i].text)]>=3&&INT[cls(r[i+1].text)]>=
 var j=-1;for(var k=i+2;k<r.length;k++){if(INT[cls(r[k].text)]<3){j=k;break;}}
 if(j>-1){var e=r.splice(j,1)[0];r.splice(i+1,0,e);}}}
 r.forEach(function(d,k){d.day=WD[k];});w.days=r;save();render();};
-document.getElementById("reset").onclick=function(){weeks[cur]=build()[cur];save();render();renderOv();};
-document.getElementById("resetAll").onclick=function(){if(confirm("Alle Änderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}load();sel();render();renderOv();}};
-loadPace();load();sel();leg();initPaceInputs();showPaceDate();renderOv();
+document.getElementById("reset").onclick=function(){snapshot();weeks[cur]=build()[cur];save();render();renderOv();};
+document.getElementById("resetAll").onclick=function(){if(confirm("Alle Änderungen verwerfen?")){try{localStorage.removeItem(KEY);}catch(e){}UNDO=[];load();sel();render();renderOv();}};
+loadPace();load();sel();leg();initPaceInputs();showPaceDate();renderOv();updateUndo();
 S.textContent="Trainingsplan korrekt geladen.";
 }catch(err){S.className="bad";S.textContent="Fehler: "+err.message;}
 </script></body></html>
